@@ -1,24 +1,88 @@
-/* Screen preview: fit an A4 sheet into the available viewport */
-.page-preview {
+.page-preview-root {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.page-zoom {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #1a1d24;
+  border-bottom: 1px solid #2a2f3a;
+  font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: #e8ecf2;
+}
+
+.page-zoom__btn {
+  min-width: 32px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid #3d4556;
+  border-radius: 6px;
+  background: #242830;
+  color: #e8ecf2;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.page-zoom__btn:hover:not(:disabled) {
+  background: #2c313c;
+  border-color: #5b9dff;
+}
+
+.page-zoom__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-zoom__btn--text {
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.page-zoom__slider {
+  width: 120px;
+  accent-color: #5b9dff;
+  cursor: pointer;
+}
+
+.page-zoom__label {
+  min-width: 3.2rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #9aa3b2;
+  text-align: center;
+}
+
+/* Screen preview: fit/zoom an A4 sheet in the available viewport */
+.page-preview {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
   display: grid;
   place-items: center;
-  overflow: hidden;
+  overflow: auto;
   padding: 12px;
   box-sizing: border-box;
 }
 
 .page-preview__stage {
-  /* Sized by JS to match scaled A4; keeps layout stable while scaling */
   display: grid;
-  place-items: center;
+  place-items: start;
 }
 
 .page-preview__scale {
-  transform-origin: center center;
-  /* --preview-scale set by ResizeObserver so screen ≈ print proportions */
-  transform: scale(var(--preview-scale, 1));
+  transform-origin: top left;
 }
 
 /* True A4 page — same metrics for screen (scaled) and print (1:1) */

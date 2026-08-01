@@ -14,6 +14,10 @@ import {
 import Card from './Card'
 import './PagePreview.css'
 
+const ZOOM_MIN = 0.25
+const ZOOM_MAX = 3
+const ZOOM_STEP = 0.1
+
 type PagePreviewProps = {
   cards: CardData[]
   columns: number
@@ -46,6 +50,10 @@ function pageStyle(columns: number, rows: number): React.CSSProperties {
     '--card-w': `${CARD_WIDTH_MM}mm`,
     '--card-h': `${CARD_HEIGHT_MM}mm`,
   } as React.CSSProperties
+}
+
+function clampZoom(value: number) {
+  return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value))
 }
 
 function PageSheet({
@@ -100,11 +108,16 @@ function PageSheet({
   )
 }
 
-/** Scales the true-size A4 sheet uniformly so preview matches print proportions. */
-function FitStage({ children }: { children: React.ReactNode }) {
+/**
+ * Fits the true-size A4 sheet to the viewport, then multiplies by user zoom.
+ * Print is unaffected (separate printMode tree).
+ */
+function ZoomStage({ children }: { children: React.ReactNode }) {
   const viewportRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const [fit, setFit] = useState({ scale: 1, width: 0, height: 0 })
+  const [fitScale, setFitScale] = useState(1)
+  /** 1 = fit-to-view; user can zoom relative to that */
+  const [userZoom, setUserZoom] = useState(1)
 
   useEffect(() => {
     const viewport = viewportRef.current
@@ -122,7 +135,7 @@ function FitStage({ children }: { children: React.ReactNode }) {
         1,
       )
       const safe = Number.isFinite(scale) && scale > 0 ? scale : 1
-      setFit({ scale: safe, width: sw * safe, height: sh * safe })
+      setFitScale(safe)
     }
 
     update()
@@ -136,21 +149,87 @@ function FitStage({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
+  const scale = fitScale * userZoom
+  const contentW = contentRef.current?.offsetWidth ?? 0
+  const contentH = contentRef.current?.offsetHeight ?? 0
+  const stageW = contentW * scale
+  const stageH = contentH * scale
+  const zoomPercent = Math.round(userZoom * 100)
+
   return (
-    <div className="page-preview" ref={viewportRef}>
-      <div
-        className="page-preview__stage"
-        style={{ width: fit.width || undefined, height: fit.height || undefined }}
-      >
+    <div className="page-preview-root">
+      <div className="page-zoom" role="toolbar" aria-label="Preview zoom">
+        <button
+          type="button"
+          className="page-zoom__btn"
+          onClick={() => setUserZoom((z) => clampZoom(z - ZOOM_STEP))}
+          disabled={userZoom <= ZOOM_MIN}
+          aria-label="Zoom out"
+        >
+          −
+        </button>
+        <input
+          className="page-zoom__slider"
+          type="range"
+          min={ZOOM_MIN}
+          max={ZOOM_MAX}
+          step={ZOOM_STEP}
+          value={userZoom}
+          onChange={(event) => setUserZoom(clampZoom(Number(event.target.value)))}
+          aria-label="Zoom level"
+        />
+        <button
+          type="button"
+          className="page-zoom__btn"
+          onClick={() => setUserZoom((z) => clampZoom(z + ZOOM_STEP))}
+          disabled={userZoom >= ZOOM_MAX}
+          aria-label="Zoom in"
+        >
+          +
+        </button>
+        <span className="page-zoom__label" aria-live="polite">
+          {zoomPercent}%
+        </span>
+        <button
+          type="button"
+          className="page-zoom__btn page-zoom__btn--text"
+          onClick={() => setUserZoom(1)}
+          title="Fit page in view"
+        >
+          Fit
+        </button>
+        <button
+          type="button"
+          className="page-zoom__btn page-zoom__btn--text"
+          onClick={() => {
+            // 100% of true size relative to fit baseline:
+            // userZoom such that fitScale * userZoom = 1 → userZoom = 1/fitScale
+            if (fitScale > 0) setUserZoom(clampZoom(1 / fitScale))
+          }}
+          title="Actual size (100% of print size)"
+        >
+          100%
+        </button>
+      </div>
+
+      <div className="page-preview" ref={viewportRef}>
         <div
-          ref={contentRef}
-          className="page-preview__scale"
+          className="page-preview__stage"
           style={{
-            transform: `scale(${fit.scale})`,
-            transformOrigin: 'top left',
+            width: stageW || undefined,
+            height: stageH || undefined,
           }}
         >
-          {children}
+          <div
+            ref={contentRef}
+            className="page-preview__scale"
+            style={{
+              transform: `scale(${scale})`,
+              transformOrigin: 'top left',
+            }}
+          >
+            {children}
+          </div>
         </div>
       </div>
     </div>
@@ -201,7 +280,7 @@ function PagePreview({
   }
 
   return (
-    <FitStage>
+    <ZoomStage>
       <PageSheet
         cards={cards}
         columns={columns}
@@ -210,7 +289,7 @@ function PagePreview({
         onSelect={onSelect}
         interactive
       />
-    </FitStage>
+    </ZoomStage>
   )
 }
 

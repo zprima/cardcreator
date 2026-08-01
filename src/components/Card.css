@@ -215,7 +215,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 10mm;
+  bottom: calc(10mm + 20px);
   height: 12mm;
   width: 100%;
   background: linear-gradient(
@@ -229,8 +229,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
   gap: 0;
   padding: 0 2mm 0 3mm;
+  text-align: left;
 }
 
 .card__name {
@@ -240,6 +242,8 @@
   letter-spacing: 0.02em;
   line-height: 1.05;
   color: #fff;
+  width: 100%;
+  text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -258,6 +262,8 @@
   line-height: 1.05;
   margin-top: -0.3mm;
   color: #fff;
+  width: 100%;
+  text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
