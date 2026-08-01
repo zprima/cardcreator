@@ -11,12 +11,12 @@ export const SEASONS: Record<SeasonId, Season> = {
   spring: {
     id: 'spring',
     label: 'Spring',
-    color: '#0de427',
+    color: '#15cc2b',
   },
   summer: {
     id: 'summer',
     label: 'Summer',
-    color: '#FFE600',
+    color: '#e6d215',
   },
   autumn: {
     id: 'autumn',

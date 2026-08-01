@@ -71,3 +71,24 @@ export function clearCard(card: CardData): CardData {
     imageName: null,
   }
 }
+
+/**
+ * Copy text/metadata fields from source onto target.
+ * Keeps target id and does not copy image (imageUrl / imageName).
+ */
+export function duplicateCardData(
+  target: CardData,
+  source: CardData,
+): CardData {
+  return {
+    ...target,
+    name: source.name,
+    subname: source.subname,
+    breed: source.breed,
+    sex: source.sex,
+    birthDate: source.birthDate,
+    cardSet: source.cardSet,
+    seasonId: source.seasonId,
+    // imageUrl + imageName intentionally left on target
+  }
+}

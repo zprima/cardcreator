@@ -173,7 +173,13 @@
     margin: 0;
   }
 
-  .page-preview {
+  /* Hide interactive preview + zoom toolbar; only print sheets remain */
+  .page-preview-root,
+  .page-zoom {
+    display: none !important;
+  }
+
+  .page-preview:not(.page-preview--print) {
     display: none !important;
   }
 

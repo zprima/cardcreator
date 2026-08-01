@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   clearCard,
   createCardGrid,
+  duplicateCardData,
   resizeCardGrid,
   type CardData,
 } from './cardData'
@@ -87,6 +88,26 @@ function App() {
     updateSelected((card) => clearCard(card))
   }
 
+  const handleDuplicateFrom = (sourceId: string) => {
+    if (!selectedId || sourceId === selectedId) return
+    const source = cards.find((c) => c.id === sourceId)
+    if (!source) return
+    updateSelected((card) => duplicateCardData(card, source))
+  }
+
+  const duplicateSources = useMemo(
+    () =>
+      cards
+        .map((card, index) => ({
+          id: card.id,
+          label: card.name.trim()
+            ? `Card ${index + 1} — ${card.name.trim()}`
+            : `Card ${index + 1}`,
+        }))
+        .filter((item) => item.id !== selectedId),
+    [cards, selectedId],
+  )
+
   return (
     <main className="app">
       <aside className="app__layout" aria-label="Layout settings">
@@ -145,6 +166,8 @@ function App() {
             cardSet={selectedCard.cardSet}
             onCardSetChange={(cardSet) => updateSelected({ cardSet })}
             onClear={handleClearCard}
+            duplicateSources={duplicateSources}
+            onDuplicateFrom={handleDuplicateFrom}
           />
         ) : (
           <div className="app__controls-empty">Select a card to edit</div>

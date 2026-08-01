@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { SEASONS, type SeasonId } from '../seasons'
 import SeasonSymbol from './SeasonSymbol'
 import './Controls.css'
@@ -24,6 +25,8 @@ type ControlsProps = {
   cardSet: string
   onCardSetChange: (cardSet: string) => void
   onClear: () => void
+  duplicateSources: { id: string; label: string }[]
+  onDuplicateFrom: (sourceId: string) => void
 }
 
 function Controls({
@@ -46,7 +49,21 @@ function Controls({
   cardSet,
   onCardSetChange,
   onClear,
+  duplicateSources,
+  onDuplicateFrom,
 }: ControlsProps) {
+  const [duplicateSourceId, setDuplicateSourceId] = useState('')
+
+  useEffect(() => {
+    // Drop selection if source list no longer includes it (e.g. switched cards)
+    if (
+      duplicateSourceId &&
+      !duplicateSources.some((source) => source.id === duplicateSourceId)
+    ) {
+      setDuplicateSourceId('')
+    }
+  }, [duplicateSourceId, duplicateSources])
+
   return (
     <section className="controls" aria-label="Card controls">
       <header className="controls__header">
@@ -63,6 +80,39 @@ function Controls({
         >
           Clear card
         </button>
+
+        <div className="controls__duplicate">
+          <span className="controls__label">Duplicate from</span>
+          <div className="controls__duplicate-row">
+            <select
+              className="controls__input controls__duplicate-select"
+              value={duplicateSourceId}
+              onChange={(event) => setDuplicateSourceId(event.target.value)}
+              aria-label="Source card to duplicate from"
+            >
+              <option value="">Select card…</option>
+              {duplicateSources.map((source) => (
+                <option key={source.id} value={source.id}>
+                  {source.label}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className="controls__duplicate-btn"
+              disabled={!duplicateSourceId}
+              onClick={() => {
+                if (!duplicateSourceId) return
+                onDuplicateFrom(duplicateSourceId)
+              }}
+            >
+              Duplicate
+            </button>
+          </div>
+          <p className="controls__duplicate-hint">
+            Copies fields only — picture is not changed.
+          </p>
+        </div>
       </header>
 
       <div className="controls__body">

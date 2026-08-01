@@ -271,3 +271,19 @@
     0 0.2mm 0.4mm rgba(0, 0, 0, 0.75),
     0 0 1.2mm rgba(0, 0, 0, 0.35);
 }
+
+/* Print/PDF: drop shadows that rasterize as grey boxes around shapes/text */
+@media print {
+  .card,
+  .card * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .card__seasonIndicator {
+    border: 0.35mm solid #fff !important;
+  }
+}
