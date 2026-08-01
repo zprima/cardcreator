@@ -56,6 +56,8 @@ function App() {
           name={name}
           subname={subname}
           cardSet={cardSet}
+          breed={breed}
+          sex={sex}
         />
       </section>
       <section className="app__controls" aria-label="Controls">

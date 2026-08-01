@@ -9,6 +9,8 @@ type CardProps = {
   name?: string
   subname?: string
   cardSet?: string
+  breed?: string
+  sex?: string
 }
 
 function Card({
@@ -18,9 +20,16 @@ function Card({
   name,
   subname,
   cardSet,
+  breed,
+  sex,
 }: CardProps) {
   const seasonColor = season?.color ?? '#c9a227'
   const cardSetLabel = cardSet?.trim() || ''
+  const breedLabel = breed?.trim() || ''
+  const sexLabel = sex?.trim()
+    ? sex.trim().charAt(0).toUpperCase() + sex.trim().slice(1)
+    : ''
+  const showMetaStrip = Boolean(breedLabel || sexLabel)
 
   return (
     <div
@@ -33,10 +42,6 @@ function Card({
           {imageUrl ? (
             <img className="card__image" src={imageUrl} alt="Card art" />
           ) : null}
-        </div>
-        <div className="card__type">Pes - Mešanec</div>
-        <div className="card__dateofbirth">
-          {birthDateLabel ?? '—'}
         </div>
         <div className="card__description">
           <div className="card__name">{name?.trim() || '—'}</div>
@@ -58,6 +63,17 @@ function Card({
       >
         {season ? <SeasonSymbol season={season.id} /> : null}
       </div>
+
+      {showMetaStrip ? (
+        <div className="card__metaStrip">
+          {breedLabel ? <div className="card__breed">{breedLabel}</div> : null}
+          {sexLabel ? <div className="card__sex">{sexLabel}</div> : null}
+        </div>
+      ) : null}
+
+      {birthDateLabel ? (
+        <div className="card__dateofbirth">{birthDateLabel}</div>
+      ) : null}
 
       {cardSetLabel ? (
         <div className="card__cardSet">{cardSetLabel}</div>
