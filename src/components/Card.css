@@ -16,45 +16,45 @@
     serif;
 }
 
-/* Yellow corner-only frame overlay (V / L brackets at each corner) */
-.card__frame {
+/* Season corner frame overlay (V / L brackets at each corner) */
+.card__seasonFrame {
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
 }
 
-.card__frame-corner {
+.card__seasonFrame-corner {
   position: absolute;
   width: 48px;
   height: 48px;
-  border-color: yellow;
+  border-color: #c9a227; /* neutral default until season is set */
   border-style: solid;
   box-sizing: border-box;
 }
 
-.card__frame-corner--tl {
+.card__seasonFrame-corner--tl {
   top: 6px;
   left: 6px;
   border-width: 6px 0 0 6px;
   border-top-left-radius: 4px;
 }
 
-.card__frame-corner--tr {
+.card__seasonFrame-corner--tr {
   top: 6px;
   right: 6px;
   border-width: 6px 6px 0 0;
   border-top-right-radius: 4px;
 }
 
-.card__frame-corner--bl {
+.card__seasonFrame-corner--bl {
   bottom: 6px;
   left: 6px;
   border-width: 0 0 6px 6px;
   border-bottom-left-radius: 4px;
 }
 
-.card__frame-corner--br {
+.card__seasonFrame-corner--br {
   bottom: 6px;
   right: 6px;
   border-width: 0 6px 6px 0;
@@ -90,15 +90,20 @@
   display: block;
 }
 
-.card__mana {
+.card__seasonIndicator {
   position: absolute;
   top: 13px;
   left: 13px;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: orange;
-  z-index: 4; /* above yellow frame overlay */
+  background: #c9a227; /* neutral default until season is set */
+  z-index: 4; /* above seasonFrame overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 .card__picTaken {
