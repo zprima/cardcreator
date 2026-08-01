@@ -19,6 +19,8 @@
   font-family: 'EB Garamond', 'Palatino Linotype', Palatino, 'Times New Roman',
     serif;
   color: #fff;
+  /* Avoid inheriting button text-align:center from interactive page slots */
+  text-align: left;
 }
 
 .card--empty {
@@ -291,8 +293,12 @@
   padding: 0 3.2mm 2.4mm 4mm; /* extra left for spine */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 0;
+  /* Explicit: interactive preview wraps the card in a <button>, which
+     defaults to text-align:center and would center name/subname on screen
+     while print (plain <div>) stays left — keep both identical. */
+  text-align: left;
 }
 
 .card__name {
@@ -303,6 +309,7 @@
   line-height: 1.08;
   color: #fff;
   width: 100%;
+  text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -322,6 +329,7 @@
   margin-top: 0.4mm;
   color: rgba(255, 255, 255, 0.92);
   width: 100%;
+  text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

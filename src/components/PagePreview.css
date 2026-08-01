@@ -135,6 +135,8 @@
   box-sizing: border-box;
   font: inherit;
   color: inherit;
+  /* Buttons default to text-align:center; keep card text left like print slots */
+  text-align: left;
   position: relative;
   -webkit-appearance: none;
   appearance: none;
