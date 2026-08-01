@@ -14,6 +14,11 @@ function App() {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [birthDate, setBirthDate] = useState('')
   const [seasonId, setSeasonId] = useState<SeasonId | null>(null)
+  const [sex, setSex] = useState('')
+  const [breed, setBreed] = useState('')
+  const [name, setName] = useState('')
+  const [subname, setSubname] = useState('')
+  const [cardSet, setCardSet] = useState('')
 
   useEffect(() => {
     if (!imageFile) {
@@ -48,6 +53,9 @@ function App() {
           imageUrl={imageUrl}
           birthDateLabel={birthDateLabel}
           season={season}
+          name={name}
+          subname={subname}
+          cardSet={cardSet}
         />
       </section>
       <section className="app__controls" aria-label="Controls">
@@ -58,6 +66,16 @@ function App() {
           onBirthDateChange={setBirthDate}
           seasonId={seasonId}
           onSeasonChange={setSeasonId}
+          sex={sex}
+          onSexChange={setSex}
+          breed={breed}
+          onBreedChange={setBreed}
+          name={name}
+          onNameChange={setName}
+          subname={subname}
+          onSubnameChange={setSubname}
+          cardSet={cardSet}
+          onCardSetChange={setCardSet}
         />
       </section>
     </main>

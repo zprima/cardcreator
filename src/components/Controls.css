@@ -80,7 +80,9 @@
   color: #333;
 }
 
-.controls__date-input {
+.controls__date-input,
+.controls__select,
+.controls__text-input {
   font: inherit;
   font-size: 0.95rem;
   padding: 8px 10px;
@@ -88,6 +90,21 @@
   border-radius: 6px;
   background: #fff;
   color: #111;
+  min-width: 12rem;
+  box-sizing: border-box;
+}
+
+.controls__select {
+  cursor: pointer;
+}
+
+.controls__text-input {
+  width: 100%;
+  max-width: 20rem;
+}
+
+.controls__text-input::placeholder {
+  color: #999;
 }
 
 .controls__season-options {
