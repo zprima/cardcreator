@@ -1,23 +1,23 @@
 .controls {
-  --ctrl-bg: #ffffff;
-  --ctrl-surface: #ffffff;
-  --ctrl-surface-hover: #f7f8fa;
-  --ctrl-border: #e4e7ec;
-  --ctrl-border-strong: #c8cdd6;
-  --ctrl-text: #14181f;
-  --ctrl-muted: #5b6575;
-  --ctrl-placeholder: #9aa3b2;
-  --ctrl-accent: #1f6feb;
-  --ctrl-accent-soft: rgba(31, 111, 235, 0.1);
-  --ctrl-focus: rgba(31, 111, 235, 0.35);
+  --ctrl-bg: #1a1d24;
+  --ctrl-surface: #242830;
+  --ctrl-surface-hover: #2c313c;
+  --ctrl-border: #353b48;
+  --ctrl-border-strong: #4a5160;
+  --ctrl-text: #f0f2f5;
+  --ctrl-muted: #9aa3b2;
+  --ctrl-placeholder: #6b7380;
+  --ctrl-accent: #5b9dff;
+  --ctrl-accent-soft: rgba(91, 157, 255, 0.16);
+  --ctrl-focus: rgba(91, 157, 255, 0.4);
 
   height: 100%;
   max-height: 100svh;
-  padding: 16px 18px;
+  padding: 14px 12px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   overflow: hidden;
   background: var(--ctrl-bg);
   color: var(--ctrl-text);
@@ -32,7 +32,7 @@
 
 .controls__heading {
   margin: 0 0 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 650;
   letter-spacing: 0.01em;
   color: var(--ctrl-text);
@@ -43,24 +43,27 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 2px;
 }
 
 .controls__section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .controls__section--optional {
-  padding-top: 12px;
+  padding-top: 10px;
   border-top: 1px solid var(--ctrl-border);
 }
 
 .controls__section-title {
   margin: 0;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -68,7 +71,7 @@
 }
 
 .controls__label {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -85,7 +88,7 @@
 .controls__picture {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -97,18 +100,18 @@
 
 .controls__upload-label {
   display: inline-block;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border: 1px solid var(--ctrl-accent);
   border-radius: 6px;
   background: var(--ctrl-accent-soft);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--ctrl-accent);
   line-height: 1.2;
 }
 
 .controls__upload:hover .controls__upload-label {
-  background: rgba(31, 111, 235, 0.16);
+  background: rgba(91, 157, 255, 0.24);
 }
 
 .controls__file-input {
@@ -125,7 +128,7 @@
 
 .controls__filename {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--ctrl-muted);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -133,10 +136,11 @@
   min-width: 0;
 }
 
+/* Single-column stacked controls */
 .controls__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .controls__field {
@@ -144,12 +148,13 @@
   flex-direction: column;
   gap: 4px;
   min-width: 0;
+  width: 100%;
 }
 
 .controls__input {
   width: 100%;
   font: inherit;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   padding: 7px 9px;
   border: 1px solid var(--ctrl-border);
   border-radius: 6px;
@@ -157,7 +162,7 @@
   color: var(--ctrl-text);
   box-sizing: border-box;
   min-width: 0;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 .controls__input:hover {
@@ -186,17 +191,18 @@
 }
 
 .controls__season-options {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 6px;
 }
 
 .controls__season-option {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
-  padding: 8px 4px;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 7px 8px;
   border: 1px solid var(--ctrl-border);
   border-radius: 8px;
   background: var(--ctrl-surface);
@@ -221,8 +227,8 @@
 }
 
 .controls__season-option-swatch {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -232,7 +238,7 @@
 }
 
 .controls__season-option-label {
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.1;
