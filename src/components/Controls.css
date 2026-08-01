@@ -1,51 +1,114 @@
 .controls {
-  width: 100%;
+  --ctrl-bg: #ffffff;
+  --ctrl-surface: #ffffff;
+  --ctrl-surface-hover: #f7f8fa;
+  --ctrl-border: #e4e7ec;
+  --ctrl-border-strong: #c8cdd6;
+  --ctrl-text: #14181f;
+  --ctrl-muted: #5b6575;
+  --ctrl-placeholder: #9aa3b2;
+  --ctrl-accent: #1f6feb;
+  --ctrl-accent-soft: rgba(31, 111, 235, 0.1);
+  --ctrl-focus: rgba(31, 111, 235, 0.35);
+
   height: 100%;
-  padding: 24px;
+  max-height: 100svh;
+  padding: 16px 18px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  overflow: auto;
+  gap: 12px;
+  overflow: hidden;
+  background: var(--ctrl-bg);
+  color: var(--ctrl-text);
+  font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
-.controls__panel {
-  border: 1px solid #d0d0d0;
-  border-radius: 8px;
-  padding: 16px;
+.controls__header {
+  flex-shrink: 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--ctrl-border);
+}
+
+.controls__heading {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: var(--ctrl-text);
+}
+
+.controls__body {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  background: #fafafa;
+  gap: 14px;
+  justify-content: flex-start;
 }
 
-.controls__title {
+.controls__section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.controls__section--optional {
+  padding-top: 12px;
+  border-top: 1px solid var(--ctrl-border);
+}
+
+.controls__section-title {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ctrl-accent);
+}
+
+.controls__label {
+  font-size: 0.7rem;
   font-weight: 600;
-  color: #111;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ctrl-muted);
+  line-height: 1.2;
+}
+
+.controls__row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.controls__picture {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
 }
 
 .controls__upload {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
+  flex-shrink: 0;
   cursor: pointer;
 }
 
 .controls__upload-label {
   display: inline-block;
-  padding: 8px 14px;
-  border: 1px solid #333;
+  padding: 6px 12px;
+  border: 1px solid var(--ctrl-accent);
   border-radius: 6px;
-  background: #fff;
-  font-size: 0.9rem;
-  color: #111;
+  background: var(--ctrl-accent-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ctrl-accent);
+  line-height: 1.2;
 }
 
 .controls__upload:hover .controls__upload-label {
-  background: #f0f0f0;
+  background: rgba(31, 111, 235, 0.16);
 }
 
 .controls__file-input {
@@ -60,72 +123,86 @@
   border: 0;
 }
 
-.controls__filename,
-.controls__hint {
+.controls__filename {
   margin: 0;
-  font-size: 0.85rem;
-  color: #555;
-  word-break: break-all;
+  font-size: 0.78rem;
+  color: var(--ctrl-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.controls__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
 }
 
 .controls__field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
 }
 
-.controls__field-label {
-  font-size: 0.85rem;
-  color: #333;
-}
-
-.controls__date-input,
-.controls__select,
-.controls__text-input {
-  font: inherit;
-  font-size: 0.95rem;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: #fff;
-  color: #111;
-  min-width: 12rem;
-  box-sizing: border-box;
-}
-
-.controls__select {
-  cursor: pointer;
-}
-
-.controls__text-input {
+.controls__input {
   width: 100%;
-  max-width: 20rem;
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 7px 9px;
+  border: 1px solid var(--ctrl-border);
+  border-radius: 6px;
+  background: var(--ctrl-surface);
+  color: var(--ctrl-text);
+  box-sizing: border-box;
+  min-width: 0;
+  color-scheme: light;
 }
 
-.controls__text-input::placeholder {
-  color: #999;
+.controls__input:hover {
+  border-color: var(--ctrl-border-strong);
+}
+
+.controls__input:focus {
+  outline: 2px solid var(--ctrl-focus);
+  outline-offset: 1px;
+  border-color: var(--ctrl-accent);
+}
+
+.controls__input::placeholder {
+  color: var(--ctrl-placeholder);
+}
+
+.controls__input option {
+  background: var(--ctrl-surface);
+  color: var(--ctrl-text);
+}
+
+.controls__season {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .controls__season-options {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
 }
 
 .controls__season-option {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
+  gap: 4px;
+  padding: 8px 4px;
+  border: 1px solid var(--ctrl-border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--ctrl-surface);
   cursor: pointer;
   font: inherit;
-  font-size: 0.9rem;
-  color: #111;
-  text-align: left;
+  color: var(--ctrl-text);
   transition:
     border-color 0.15s,
     box-shadow 0.15s,
@@ -133,19 +210,19 @@
 }
 
 .controls__season-option:hover {
-  border-color: #888;
-  background: #f7f7f7;
+  border-color: var(--ctrl-border-strong);
+  background: var(--ctrl-surface-hover);
 }
 
 .controls__season-option--selected {
-  border-color: #111;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.12);
-  background: #f0f0f0;
+  border-color: var(--ctrl-accent);
+  box-shadow: 0 0 0 2px var(--ctrl-accent-soft);
+  background: var(--ctrl-surface-hover);
 }
 
 .controls__season-option-swatch {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -155,5 +232,13 @@
 }
 
 .controls__season-option-label {
-  font-weight: 500;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: var(--ctrl-muted);
+}
+
+.controls__season-option--selected .controls__season-option-label {
+  color: var(--ctrl-accent);
 }

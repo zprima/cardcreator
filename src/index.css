@@ -4,12 +4,11 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  min-height: 100svh;
-  background: #fff;
-}
-
+html,
+body,
 #root {
-  min-height: 100svh;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
 }

@@ -43,158 +43,153 @@ function Controls({
 }: ControlsProps) {
   return (
     <section className="controls" aria-label="Card controls">
-      <div className="controls__panel">
-        <h2 className="controls__title">Picture</h2>
-        <label className="controls__upload">
-          <span className="controls__upload-label">
-            {fileName ? 'Change image' : 'Upload image'}
-          </span>
-          <input
-            type="file"
-            accept="image/*"
-            className="controls__file-input"
-            onChange={(event) => {
-              const file = event.target.files?.[0] ?? null
-              onImageChange(file)
-            }}
-          />
-        </label>
-        {fileName ? (
-          <p className="controls__filename">{fileName}</p>
-        ) : (
-          <p className="controls__hint">Choose an image to show on the card.</p>
-        )}
-      </div>
+      <header className="controls__header">
+        <h1 className="controls__heading">Card controls</h1>
+      </header>
 
-      <div className="controls__panel">
-        <h2 className="controls__title">Birth day</h2>
-        <label className="controls__field">
-          <span className="controls__field-label">Date of birth</span>
-          <input
-            type="date"
-            className="controls__date-input"
-            value={birthDate}
-            onChange={(event) => onBirthDateChange(event.target.value)}
-          />
-        </label>
-        <p className="controls__hint">
-          Shown on the card as the date of birth.
-        </p>
-      </div>
+      <div className="controls__body">
+        <div className="controls__section">
+          <p className="controls__section-title">Required</p>
 
-      <div className="controls__panel">
-        <h2 className="controls__title">Sex</h2>
-        <label className="controls__field">
-          <span className="controls__field-label">Dog sex</span>
-          <select
-            className="controls__select"
-            value={sex}
-            onChange={(event) => onSexChange(event.target.value)}
-          >
-            <option value="">Select…</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-        </label>
-      </div>
-
-      <div className="controls__panel">
-        <h2 className="controls__title">Breed</h2>
-        <label className="controls__field">
-          <span className="controls__field-label">Dog breed</span>
-          <input
-            type="text"
-            className="controls__text-input"
-            value={breed}
-            onChange={(event) => onBreedChange(event.target.value)}
-            placeholder="e.g. Mešanec, Labrador…"
-            autoComplete="off"
-          />
-        </label>
-      </div>
-
-      <div className="controls__panel">
-        <h2 className="controls__title">Name</h2>
-        <label className="controls__field">
-          <span className="controls__field-label">Dog name</span>
-          <input
-            type="text"
-            className="controls__text-input"
-            value={name}
-            onChange={(event) => onNameChange(event.target.value)}
-            placeholder="e.g. Blisk"
-            autoComplete="off"
-          />
-        </label>
-      </div>
-
-      <div className="controls__panel">
-        <h2 className="controls__title">Subname</h2>
-        <label className="controls__field">
-          <span className="controls__field-label">Dog subname</span>
-          <input
-            type="text"
-            className="controls__text-input"
-            value={subname}
-            onChange={(event) => onSubnameChange(event.target.value)}
-            placeholder="e.g. strah ovc"
-            autoComplete="off"
-          />
-        </label>
-      </div>
-
-      <div className="controls__panel">
-        <h2 className="controls__title">Card Set</h2>
-        <label className="controls__field">
-          <span className="controls__field-label">Set name</span>
-          <input
-            type="text"
-            className="controls__text-input"
-            value={cardSet}
-            onChange={(event) => onCardSetChange(event.target.value)}
-            placeholder="e.g. Base Set"
-            autoComplete="off"
-          />
-        </label>
-        <p className="controls__hint">
-          Shown on the bottom-right of the card when set.
-        </p>
-      </div>
-
-      <div className="controls__panel">
-        <h2 className="controls__title">Season</h2>
-        <p className="controls__hint">
-          Colors the season frame and indicator on the card.
-        </p>
-        <div
-          className="controls__season-options"
-          role="radiogroup"
-          aria-label="Season"
-        >
-          {SEASON_IDS.map((id) => {
-            const season = SEASONS[id]
-            const selected = seasonId === id
-            return (
-              <button
-                key={id}
-                type="button"
-                role="radio"
-                aria-checked={selected}
-                className={`controls__season-option${selected ? ' controls__season-option--selected' : ''}`}
-                onClick={() => onSeasonChange(id)}
+          <div className="controls__row controls__row--picture">
+            <span className="controls__label">Picture</span>
+            <div className="controls__picture">
+              <label className="controls__upload">
+                <span className="controls__upload-label">
+                  {fileName ? 'Change' : 'Upload'}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="controls__file-input"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0] ?? null
+                    onImageChange(file)
+                  }}
+                />
+              </label>
+              <span
+                className="controls__filename"
+                title={fileName ?? undefined}
               >
-                <span
-                  className="controls__season-option-swatch"
-                  style={{ backgroundColor: season.color }}
-                >
-                  <SeasonSymbol season={season.id} />
-                </span>
-                <span className="controls__season-option-label">
-                  {season.label}
-                </span>
-              </button>
-            )
-          })}
+                {fileName ?? 'No image'}
+              </span>
+            </div>
+          </div>
+
+          <div className="controls__grid">
+            <label className="controls__field">
+              <span className="controls__label">Name</span>
+              <input
+                type="text"
+                className="controls__input"
+                value={name}
+                onChange={(event) => onNameChange(event.target.value)}
+                placeholder="Blisk"
+                autoComplete="off"
+              />
+            </label>
+
+            <label className="controls__field">
+              <span className="controls__label">Subname</span>
+              <input
+                type="text"
+                className="controls__input"
+                value={subname}
+                onChange={(event) => onSubnameChange(event.target.value)}
+                placeholder="strah ovc"
+                autoComplete="off"
+              />
+            </label>
+          </div>
+
+          <div className="controls__season">
+            <span className="controls__label">Season</span>
+            <div
+              className="controls__season-options"
+              role="radiogroup"
+              aria-label="Season"
+            >
+              {SEASON_IDS.map((id) => {
+                const season = SEASONS[id]
+                const selected = seasonId === id
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    role="radio"
+                    aria-checked={selected}
+                    title={season.label}
+                    className={`controls__season-option${selected ? ' controls__season-option--selected' : ''}`}
+                    onClick={() => onSeasonChange(id)}
+                  >
+                    <span
+                      className="controls__season-option-swatch"
+                      style={{ backgroundColor: season.color }}
+                    >
+                      <SeasonSymbol season={season.id} />
+                    </span>
+                    <span className="controls__season-option-label">
+                      {season.label}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className="controls__section controls__section--optional">
+          <p className="controls__section-title">Optional</p>
+
+          <div className="controls__grid">
+            <label className="controls__field">
+              <span className="controls__label">Breed</span>
+              <input
+                type="text"
+                className="controls__input"
+                value={breed}
+                onChange={(event) => onBreedChange(event.target.value)}
+                placeholder="Mešanec"
+                autoComplete="off"
+              />
+            </label>
+
+            <label className="controls__field">
+              <span className="controls__label">Sex</span>
+              <select
+                className="controls__input"
+                value={sex}
+                onChange={(event) => onSexChange(event.target.value)}
+              >
+                <option value="">Select…</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </label>
+
+            <label className="controls__field">
+              <span className="controls__label">Birth day</span>
+              <input
+                type="date"
+                className="controls__input"
+                value={birthDate}
+                onChange={(event) => onBirthDateChange(event.target.value)}
+              />
+            </label>
+
+            <label className="controls__field">
+              <span className="controls__label">Card set</span>
+              <input
+                type="text"
+                className="controls__input"
+                value={cardSet}
+                onChange={(event) => onCardSetChange(event.target.value)}
+                placeholder="Base Set"
+                autoComplete="off"
+              />
+            </label>
+          </div>
         </div>
       </div>
     </section>
