@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { COUNTRIES } from '../countries'
+import { FRAMES, type FrameId } from '../frames'
 import { SEASONS, type SeasonId } from '../seasons'
 import SeasonSymbol from './SeasonSymbol'
 import './Controls.css'
@@ -17,6 +18,8 @@ type ControlsProps = {
   onSeasonChange: (seasonId: SeasonId) => void
   countryCode: string
   onCountryChange: (countryCode: string) => void
+  frameId: FrameId
+  onFrameChange: (frameId: FrameId) => void
   sex: string
   onSexChange: (sex: string) => void
   breed: string
@@ -43,6 +46,8 @@ function Controls({
   onSeasonChange,
   countryCode,
   onCountryChange,
+  frameId,
+  onFrameChange,
   sex,
   onSexChange,
   breed,
@@ -217,6 +222,23 @@ function Controls({
           <p className="controls__section-title">Optional</p>
 
           <div className="controls__grid">
+            <label className="controls__field">
+              <span className="controls__label">Frame</span>
+              <select
+                className="controls__input"
+                value={frameId}
+                onChange={(event) =>
+                  onFrameChange(event.target.value as FrameId)
+                }
+              >
+                {FRAMES.map((frame) => (
+                  <option key={frame.id} value={frame.id}>
+                    {frame.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <label className="controls__field">
               <span className="controls__label">Country</span>
               <select

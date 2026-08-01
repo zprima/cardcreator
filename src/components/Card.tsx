@@ -1,4 +1,5 @@
 import { countryCodeToFlagEmoji, getCountry } from '../countries'
+import { DEFAULT_FRAME_ID, type FrameId } from '../frames'
 import type { Season } from '../seasons'
 import SeasonSymbol from './SeasonSymbol'
 import './Card.css'
@@ -8,6 +9,7 @@ type CardProps = {
   birthDateLabel?: string | null
   season?: Season | null
   countryCode?: string | null
+  frameId?: FrameId
   name?: string
   subname?: string
   cardSet?: string
@@ -15,11 +17,67 @@ type CardProps = {
   sex?: string
 }
 
+function CardFrame({ frameId }: { frameId: FrameId }) {
+  if (frameId === 'full') {
+    return (
+      <div
+        className="card__seasonFrame card__seasonFrame--full"
+        aria-hidden="true"
+      >
+        <span className="card__seasonFrame-box" />
+      </div>
+    )
+  }
+
+  if (frameId === 'double') {
+    return (
+      <div
+        className="card__seasonFrame card__seasonFrame--double"
+        aria-hidden="true"
+      >
+        <span className="card__seasonFrame-corner card__seasonFrame-corner--tl" />
+        <span className="card__seasonFrame-corner card__seasonFrame-corner--tr" />
+        <span className="card__seasonFrame-corner card__seasonFrame-corner--bl" />
+        <span className="card__seasonFrame-corner card__seasonFrame-corner--br" />
+        <span className="card__seasonFrame-corner card__seasonFrame-corner--tl card__seasonFrame-corner--inner" />
+        <span className="card__seasonFrame-corner card__seasonFrame-corner--tr card__seasonFrame-corner--inner" />
+        <span className="card__seasonFrame-corner card__seasonFrame-corner--bl card__seasonFrame-corner--inner" />
+        <span className="card__seasonFrame-corner card__seasonFrame-corner--br card__seasonFrame-corner--inner" />
+      </div>
+    )
+  }
+
+  if (frameId === 'pips') {
+    return (
+      <div
+        className="card__seasonFrame card__seasonFrame--pips"
+        aria-hidden="true"
+      >
+        <span className="card__seasonFrame-pip card__seasonFrame-pip--tl" />
+        <span className="card__seasonFrame-pip card__seasonFrame-pip--tr" />
+        <span className="card__seasonFrame-pip card__seasonFrame-pip--bl" />
+        <span className="card__seasonFrame-pip card__seasonFrame-pip--br" />
+      </div>
+    )
+  }
+
+  // Default: L corners
+  return (
+    <div className="card__seasonFrame card__seasonFrame--l" aria-hidden="true">
+      <span className="card__seasonFrame-corner card__seasonFrame-corner--tl" />
+      <span className="card__seasonFrame-corner card__seasonFrame-corner--tr" />
+      <span className="card__seasonFrame-corner card__seasonFrame-corner--bl" />
+      <span className="card__seasonFrame-corner card__seasonFrame-corner--br" />
+    </div>
+  )
+}
+
 function Card({
   imageUrl,
   birthDateLabel,
   season,
   countryCode,
+  frameId = DEFAULT_FRAME_ID,
   name,
   subname,
   cardSet,
@@ -63,12 +121,7 @@ function Card({
         </div>
       </div>
 
-      <div className="card__seasonFrame" aria-hidden="true">
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--tl" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--tr" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--bl" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--br" />
-      </div>
+      <CardFrame frameId={frameId} />
 
       <div
         className="card__seasonIndicator"

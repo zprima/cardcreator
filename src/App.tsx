@@ -10,6 +10,7 @@ import Controls from './components/Controls'
 import LayoutPanel from './components/LayoutPanel'
 import PagePreview from './components/PagePreview'
 import { MAX_COLUMNS, MAX_ROWS } from './dimensions'
+import type { FrameId } from './frames'
 import type { SeasonId } from './seasons'
 import './App.css'
 
@@ -159,6 +160,8 @@ function App() {
             onCountryChange={(code) =>
               updateSelected({ countryCode: code || null })
             }
+            frameId={selectedCard.frameId}
+            onFrameChange={(frameId: FrameId) => updateSelected({ frameId })}
             sex={selectedCard.sex}
             onSexChange={(sex) => updateSelected({ sex })}
             breed={selectedCard.breed}

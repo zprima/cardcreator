@@ -35,6 +35,7 @@ function cardToProps(card: CardData) {
     birthDateLabel: parsed ? formatCardDate(parsed) : null,
     season: card.seasonId ? SEASONS[card.seasonId] : null,
     countryCode: card.countryCode,
+    frameId: card.frameId,
     name: card.name,
     subname: card.subname,
     cardSet: card.cardSet,

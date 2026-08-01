@@ -1,3 +1,4 @@
+import { DEFAULT_FRAME_ID, type FrameId } from './frames'
 import type { SeasonId } from './seasons'
 
 export type CardData = {
@@ -10,6 +11,7 @@ export type CardData = {
   cardSet: string
   seasonId: SeasonId | null
   countryCode: string | null
+  frameId: FrameId
   imageUrl: string | null
   imageName: string | null
 }
@@ -28,6 +30,7 @@ export function createEmptyCard(): CardData {
     cardSet: '',
     seasonId: null,
     countryCode: null,
+    frameId: DEFAULT_FRAME_ID,
     imageUrl: null,
     imageName: null,
   }
@@ -70,6 +73,7 @@ export function clearCard(card: CardData): CardData {
     cardSet: '',
     seasonId: null,
     countryCode: null,
+    frameId: DEFAULT_FRAME_ID,
     imageUrl: null,
     imageName: null,
   }
@@ -93,6 +97,7 @@ export function duplicateCardData(
     cardSet: source.cardSet,
     seasonId: source.seasonId,
     countryCode: source.countryCode,
+    frameId: source.frameId,
     // imageUrl + imageName intentionally left on target
   }
 }

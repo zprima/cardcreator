@@ -36,7 +36,7 @@
   padding: 0 3mm;
 }
 
-/* Season corner frame overlay */
+/* Season frame overlays (L default + variants) */
 .card__seasonFrame {
   position: absolute;
   inset: 0;
@@ -80,6 +80,82 @@
   right: 1.2mm;
   border-width: 0 var(--season-border-width) var(--season-border-width) 0;
   border-bottom-right-radius: 1mm;
+}
+
+/* Full inset border */
+.card__seasonFrame-box {
+  position: absolute;
+  inset: 1.4mm;
+  box-sizing: border-box;
+  border: var(--season-border-width) solid var(--season-accent);
+  border-radius: 1.6mm;
+}
+
+/* Double L: larger outer + smaller inset corners */
+.card__seasonFrame--double .card__seasonFrame-corner {
+  width: 10mm;
+  height: 10mm;
+}
+
+.card__seasonFrame--double .card__seasonFrame-corner--inner {
+  width: 6mm;
+  height: 6mm;
+  border-width: 0;
+  opacity: 0.85;
+}
+
+.card__seasonFrame--double .card__seasonFrame-corner--inner.card__seasonFrame-corner--tl {
+  top: 2.6mm;
+  left: 2.6mm;
+  border-width: 0.5mm 0 0 0.5mm;
+}
+
+.card__seasonFrame--double .card__seasonFrame-corner--inner.card__seasonFrame-corner--tr {
+  top: 2.6mm;
+  right: 2.6mm;
+  border-width: 0.5mm 0.5mm 0 0;
+}
+
+.card__seasonFrame--double .card__seasonFrame-corner--inner.card__seasonFrame-corner--bl {
+  bottom: 2.6mm;
+  left: 2.6mm;
+  border-width: 0 0 0.5mm 0.5mm;
+}
+
+.card__seasonFrame--double .card__seasonFrame-corner--inner.card__seasonFrame-corner--br {
+  bottom: 2.6mm;
+  right: 2.6mm;
+  border-width: 0 0.5mm 0.5mm 0;
+}
+
+/* Corner pips (small filled squares) */
+.card__seasonFrame-pip {
+  position: absolute;
+  width: 2.2mm;
+  height: 2.2mm;
+  box-sizing: border-box;
+  background: var(--season-accent);
+  border: 0.25mm solid color-mix(in srgb, var(--season-accent) 70%, #000);
+}
+
+.card__seasonFrame-pip--tl {
+  top: 1.6mm;
+  left: 1.6mm;
+}
+
+.card__seasonFrame-pip--tr {
+  top: 1.6mm;
+  right: 1.6mm;
+}
+
+.card__seasonFrame-pip--bl {
+  bottom: 1.6mm;
+  left: 1.6mm;
+}
+
+.card__seasonFrame-pip--br {
+  bottom: 1.6mm;
+  right: 1.6mm;
 }
 
 .card__panel {
