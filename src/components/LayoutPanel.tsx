@@ -1,3 +1,9 @@
+import {
+  CARD_HEIGHT_MM,
+  CARD_WIDTH_MM,
+  MAX_COLUMNS,
+  MAX_ROWS,
+} from '../dimensions'
 import './LayoutPanel.css'
 
 type LayoutPanelProps = {
@@ -41,7 +47,7 @@ function LayoutPanel({
             className="layout-panel__input"
             type="number"
             min={1}
-            max={6}
+            max={MAX_COLUMNS}
             value={columns}
             onChange={(event) => {
               const next = Number(event.target.value)
@@ -56,7 +62,7 @@ function LayoutPanel({
             className="layout-panel__input"
             type="number"
             min={1}
-            max={6}
+            max={MAX_ROWS}
             value={rows}
             onChange={(event) => {
               const next = Number(event.target.value)
@@ -67,6 +73,12 @@ function LayoutPanel({
 
         <p className="layout-panel__hint">
           {columns} × {rows} cards on {pageSize}
+        </p>
+        <p className="layout-panel__hint">
+          Card size: {CARD_WIDTH_MM}×{CARD_HEIGHT_MM} mm (MTG)
+        </p>
+        <p className="layout-panel__hint">
+          Max grid at true size: {MAX_COLUMNS}×{MAX_ROWS}
         </p>
 
         <button

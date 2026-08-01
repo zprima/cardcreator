@@ -44,6 +44,25 @@
   color: var(--ctrl-muted);
 }
 
+.controls__clear {
+  display: block;
+  width: 100%;
+  margin: 0 0 8px;
+  padding: 7px 10px;
+  border: 1px solid #c45c5c;
+  border-radius: 6px;
+  background: rgba(196, 92, 92, 0.12);
+  color: #e07070;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.controls__clear:hover {
+  background: rgba(196, 92, 92, 0.22);
+}
+
 .controls__body {
   flex: 1;
   min-height: 0;

@@ -54,3 +54,20 @@ export function resizeCardGrid(
 export function isPrintableCard(card: CardData): boolean {
   return Boolean(card.imageUrl)
 }
+
+/** Reset card fields while keeping its id/slot. Revokes any image URL. */
+export function clearCard(card: CardData): CardData {
+  if (card.imageUrl) URL.revokeObjectURL(card.imageUrl)
+  return {
+    id: card.id,
+    name: '',
+    subname: '',
+    breed: '',
+    sex: '',
+    birthDate: '',
+    cardSet: '',
+    seasonId: null,
+    imageUrl: null,
+    imageName: null,
+  }
+}

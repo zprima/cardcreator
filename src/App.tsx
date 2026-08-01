@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
+  clearCard,
   createCardGrid,
   resizeCardGrid,
   type CardData,
@@ -7,6 +8,7 @@ import {
 import Controls from './components/Controls'
 import LayoutPanel from './components/LayoutPanel'
 import PagePreview from './components/PagePreview'
+import { MAX_COLUMNS, MAX_ROWS } from './dimensions'
 import type { SeasonId } from './seasons'
 import './App.css'
 
@@ -52,13 +54,13 @@ function App() {
   )
 
   const handleColumnsChange = (next: number) => {
-    const cols = Math.min(6, Math.max(1, Math.floor(next)))
+    const cols = Math.min(MAX_COLUMNS, Math.max(1, Math.floor(next)))
     setColumns(cols)
     setCards((prev) => resizeCardGrid(prev, cols * rows))
   }
 
   const handleRowsChange = (next: number) => {
-    const r = Math.min(6, Math.max(1, Math.floor(next)))
+    const r = Math.min(MAX_ROWS, Math.max(1, Math.floor(next)))
     setRows(r)
     setCards((prev) => resizeCardGrid(prev, columns * r))
   }
@@ -79,6 +81,10 @@ function App() {
 
   const handlePrint = () => {
     window.print()
+  }
+
+  const handleClearCard = () => {
+    updateSelected((card) => clearCard(card))
   }
 
   return (
@@ -138,6 +144,7 @@ function App() {
             onSubnameChange={(subname) => updateSelected({ subname })}
             cardSet={selectedCard.cardSet}
             onCardSetChange={(cardSet) => updateSelected({ cardSet })}
+            onClear={handleClearCard}
           />
         ) : (
           <div className="app__controls-empty">Select a card to edit</div>

@@ -23,6 +23,7 @@ type ControlsProps = {
   onSubnameChange: (subname: string) => void
   cardSet: string
   onCardSetChange: (cardSet: string) => void
+  onClear: () => void
 }
 
 function Controls({
@@ -44,6 +45,7 @@ function Controls({
   onSubnameChange,
   cardSet,
   onCardSetChange,
+  onClear,
 }: ControlsProps) {
   return (
     <section className="controls" aria-label="Card controls">
@@ -54,6 +56,13 @@ function Controls({
             Editing card {selectedIndex} of {totalCards}
           </p>
         ) : null}
+        <button
+          type="button"
+          className="controls__clear"
+          onClick={onClear}
+        >
+          Clear card
+        </button>
       </header>
 
       <div className="controls__body">
@@ -68,6 +77,7 @@ function Controls({
                   {fileName ? 'Change' : 'Upload'}
                 </span>
                 <input
+                  key={`${selectedIndex ?? 'x'}-${fileName ?? 'none'}`}
                   type="file"
                   accept="image/*"
                   className="controls__file-input"

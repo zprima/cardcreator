@@ -30,6 +30,15 @@ function Card({
     ? sex.trim().charAt(0).toUpperCase() + sex.trim().slice(1)
     : ''
   const showMetaStrip = Boolean(breedLabel || sexLabel)
+  const hasContent = Boolean(imageUrl)
+
+  if (!hasContent) {
+    return (
+      <div className="card card--empty" aria-label="Empty card">
+        <span className="card__empty-label">No content</span>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -39,9 +48,7 @@ function Card({
     >
       <div className="card__panel">
         <div className="card__art">
-          {imageUrl ? (
-            <img className="card__image" src={imageUrl} alt="Card art" />
-          ) : null}
+          <img className="card__image" src={imageUrl!} alt="Card art" />
         </div>
         <div className="card__description">
           <div className="card__name">{name?.trim() || '—'}</div>
