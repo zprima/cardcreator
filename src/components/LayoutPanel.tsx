@@ -1,6 +1,7 @@
 import {
   CARD_HEIGHT_MM,
   CARD_WIDTH_MM,
+  MAX_BLEED_MM,
   MAX_COLUMNS,
   MAX_ROWS,
 } from '../dimensions'
@@ -10,8 +11,10 @@ type LayoutPanelProps = {
   pageSize: string
   columns: number
   rows: number
+  bleedMm: number
   onColumnsChange: (columns: number) => void
   onRowsChange: (rows: number) => void
+  onBleedMmChange: (bleedMm: number) => void
   onPrint: () => void
 }
 
@@ -19,8 +22,10 @@ function LayoutPanel({
   pageSize,
   columns,
   rows,
+  bleedMm,
   onColumnsChange,
   onRowsChange,
+  onBleedMmChange,
   onPrint,
 }: LayoutPanelProps) {
   return (
@@ -70,6 +75,25 @@ function LayoutPanel({
             }}
           />
         </label>
+
+        <label className="layout-panel__field">
+          <span className="layout-panel__label">Bleed (mm)</span>
+          <input
+            className="layout-panel__input"
+            type="number"
+            min={0}
+            max={MAX_BLEED_MM}
+            step={0.1}
+            value={bleedMm}
+            onChange={(event) => {
+              const next = Number(event.target.value)
+              if (Number.isFinite(next) && next >= 0) onBleedMmChange(next)
+            }}
+          />
+        </label>
+        <p className="layout-panel__hint">
+          Expands the black card border (0–{MAX_BLEED_MM} mm).
+        </p>
 
         <p className="layout-panel__hint">
           {columns} × {rows} cards on {pageSize}

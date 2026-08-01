@@ -8,14 +8,14 @@ export type FrameOption = {
 
 export const FRAMES: FrameOption[] = [
   {
-    id: 'double',
-    label: 'Double L',
-    description: 'Outer and inner L brackets',
-  },
-  {
     id: 'l',
     label: 'L corners',
     description: 'Classic L brackets at each corner',
+  },
+  {
+    id: 'double',
+    label: 'Double L',
+    description: 'Outer and inner L brackets',
   },
   {
     id: 'full',
@@ -29,7 +29,7 @@ export const FRAMES: FrameOption[] = [
   },
 ]
 
-export const DEFAULT_FRAME_ID: FrameId = 'double'
+export const DEFAULT_FRAME_ID: FrameId = 'l'
 
 export function isFrameId(value: string): value is FrameId {
   return FRAMES.some((frame) => frame.id === value)

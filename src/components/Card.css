@@ -4,10 +4,12 @@
   --season-border-width: 3px;
   --card-w: 63mm;
   --card-h: 88mm;
+  /* --card-bleed comes from page layout (fallback 0mm) */
+  --card-border-base: 0.4mm;
   width: var(--card-w);
   height: var(--card-h);
   box-sizing: border-box;
-  border: 0.4mm solid #000;
+  border: calc(var(--card-border-base) + var(--card-bleed, 0mm)) solid #000;
   border-radius: 2.5mm;
   background: #000;
   flex-shrink: 0;
@@ -20,6 +22,7 @@
 
 .card--empty {
   background: #fff;
+  /* Empty cards keep a thin edge; no print bleed */
   border: 0.4mm solid #c8cdd6;
   align-items: center;
   justify-content: center;

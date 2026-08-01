@@ -9,7 +9,12 @@ import {
 import Controls from './components/Controls'
 import LayoutPanel from './components/LayoutPanel'
 import PagePreview from './components/PagePreview'
-import { MAX_COLUMNS, MAX_ROWS } from './dimensions'
+import {
+  DEFAULT_BLEED_MM,
+  MAX_BLEED_MM,
+  MAX_COLUMNS,
+  MAX_ROWS,
+} from './dimensions'
 import type { FrameId } from './frames'
 import type { SeasonId } from './seasons'
 import './App.css'
@@ -25,6 +30,7 @@ function App() {
     createCardGrid(DEFAULT_COLUMNS * DEFAULT_ROWS),
   )
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [bleedMm, setBleedMm] = useState(DEFAULT_BLEED_MM)
 
   // Keep selection valid when cards array changes
   useEffect(() => {
@@ -116,8 +122,12 @@ function App() {
           pageSize={PAGE_SIZE}
           columns={columns}
           rows={rows}
+          bleedMm={bleedMm}
           onColumnsChange={handleColumnsChange}
           onRowsChange={handleRowsChange}
+          onBleedMmChange={(value) =>
+            setBleedMm(Math.min(MAX_BLEED_MM, Math.max(0, value)))
+          }
           onPrint={handlePrint}
         />
       </aside>
@@ -129,6 +139,7 @@ function App() {
           rows={rows}
           selectedId={selectedId}
           onSelect={setSelectedId}
+          bleedMm={bleedMm}
         />
         {/* Print-only sheets: cards with pictures only */}
         <PagePreview
@@ -138,6 +149,7 @@ function App() {
           selectedId={null}
           onSelect={() => {}}
           printMode
+          bleedMm={bleedMm}
         />
       </section>
 

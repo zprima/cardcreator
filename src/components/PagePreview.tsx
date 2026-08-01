@@ -26,6 +26,8 @@ type PagePreviewProps = {
   onSelect: (id: string) => void
   /** When true, only render printable cards packed into pages */
   printMode?: boolean
+  /** Extra black border bleed in mm */
+  bleedMm?: number
 }
 
 function cardToProps(card: CardData) {
@@ -44,13 +46,18 @@ function cardToProps(card: CardData) {
   }
 }
 
-function pageStyle(columns: number, rows: number): React.CSSProperties {
+function pageStyle(
+  columns: number,
+  rows: number,
+  bleedMm: number,
+): React.CSSProperties {
   return {
     '--page-cols': columns,
     '--page-rows': rows,
     '--page-gap': `${PAGE_GAP_MM}mm`,
     '--card-w': `${CARD_WIDTH_MM}mm`,
     '--card-h': `${CARD_HEIGHT_MM}mm`,
+    '--card-bleed': `${bleedMm}mm`,
   } as React.CSSProperties
 }
 
@@ -65,6 +72,7 @@ function PageSheet({
   selectedId,
   onSelect,
   interactive,
+  bleedMm,
 }: {
   cards: CardData[]
   columns: number
@@ -72,9 +80,10 @@ function PageSheet({
   selectedId: string | null
   onSelect: (id: string) => void
   interactive: boolean
+  bleedMm: number
 }) {
   return (
-    <div className="page-sheet" style={pageStyle(columns, rows)}>
+    <div className="page-sheet" style={pageStyle(columns, rows, bleedMm)}>
       <div className="page-sheet__grid">
         {cards.map((card, index) => {
           const selected = card.id === selectedId
@@ -245,6 +254,7 @@ function PagePreview({
   selectedId,
   onSelect,
   printMode = false,
+  bleedMm = 0,
 }: PagePreviewProps) {
   const slotsPerPage = columns * rows
 
@@ -275,6 +285,7 @@ function PagePreview({
             selectedId={null}
             onSelect={() => {}}
             interactive={false}
+            bleedMm={bleedMm}
           />
         ))}
       </div>
@@ -290,6 +301,7 @@ function PagePreview({
         selectedId={selectedId}
         onSelect={onSelect}
         interactive
+        bleedMm={bleedMm}
       />
     </ZoomStage>
   )

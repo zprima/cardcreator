@@ -9,6 +9,15 @@ export const PAGE_HEIGHT_MM = 297
 /** Gap between cards on the page */
 export const PAGE_GAP_MM = 2
 
+/** Base black card border (before bleed) */
+export const CARD_BORDER_BASE_MM = 0.4
+
+/** Default extra bleed added to the black border */
+export const DEFAULT_BLEED_MM = 1
+
+/** Max bleed so cards still fit gaps on a 3×3 sheet */
+export const MAX_BLEED_MM = 2
+
 /**
  * Largest grid that fits true-size MTG cards on A4 with gap.
  * width:  3×63 + 2×2 = 193mm  (< 210)
