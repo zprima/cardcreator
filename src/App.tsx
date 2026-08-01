@@ -3,8 +3,9 @@ import Card from './components/Card'
 import Controls from './components/Controls'
 import {
   formatCardDate,
-  getSeasonFromDate,
   parseDateInput,
+  SEASONS,
+  type SeasonId,
 } from './seasons'
 import './App.css'
 
@@ -12,6 +13,7 @@ function App() {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [birthDate, setBirthDate] = useState('')
+  const [seasonId, setSeasonId] = useState<SeasonId | null>(null)
 
   useEffect(() => {
     if (!imageFile) {
@@ -32,15 +34,12 @@ function App() {
     [birthDate],
   )
 
-  const season = useMemo(
-    () => (parsedBirthDate ? getSeasonFromDate(parsedBirthDate) : null),
-    [parsedBirthDate],
-  )
-
   const birthDateLabel = useMemo(
     () => (parsedBirthDate ? formatCardDate(parsedBirthDate) : null),
     [parsedBirthDate],
   )
+
+  const season = seasonId ? SEASONS[seasonId] : null
 
   return (
     <main className="app">
@@ -57,7 +56,8 @@ function App() {
           onImageChange={setImageFile}
           birthDate={birthDate}
           onBirthDateChange={setBirthDate}
-          season={season}
+          seasonId={seasonId}
+          onSeasonChange={setSeasonId}
         />
       </section>
     </main>

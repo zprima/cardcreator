@@ -31,6 +31,9 @@
   border-color: #c9a227; /* neutral default until season is set */
   border-style: solid;
   box-sizing: border-box;
+  /* Keep corners readable over busy full-art photos */
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.85))
+    drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
 }
 
 .card__seasonFrame-corner--tl {
@@ -92,8 +95,8 @@
 
 .card__seasonIndicator {
   position: absolute;
-  top: 13px;
-  left: 13px;
+  top: 18px;
+  left: 18px;
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -103,7 +106,10 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.55);
 }
 
 .card__picTaken {

@@ -1,13 +1,16 @@
-import { SEASONS, type Season } from '../seasons'
+import { SEASONS, type SeasonId } from '../seasons'
 import SeasonSymbol from './SeasonSymbol'
 import './Controls.css'
+
+const SEASON_IDS = Object.keys(SEASONS) as SeasonId[]
 
 type ControlsProps = {
   onImageChange: (file: File | null) => void
   fileName?: string | null
   birthDate: string
   onBirthDateChange: (value: string) => void
-  season?: Season | null
+  seasonId: SeasonId | null
+  onSeasonChange: (seasonId: SeasonId) => void
 }
 
 function Controls({
@@ -15,7 +18,8 @@ function Controls({
   fileName,
   birthDate,
   onBirthDateChange,
-  season,
+  seasonId,
+  onSeasonChange,
 }: ControlsProps) {
   return (
     <section className="controls" aria-label="Card controls">
@@ -53,37 +57,43 @@ function Controls({
             onChange={(event) => onBirthDateChange(event.target.value)}
           />
         </label>
-        {season ? (
-          <div className="controls__season-preview">
-            <span
-              className="controls__season-swatch"
-              style={{ backgroundColor: season.color }}
-              title={season.label}
-            >
-              <SeasonSymbol season={season.id} />
-            </span>
-            <p className="controls__hint">
-              Season: <strong>{season.label}</strong>
-            </p>
-          </div>
-        ) : (
-          <p className="controls__hint">
-            Pick a birth day to set the season color and symbol.
-          </p>
-        )}
-        <div className="controls__season-legend" aria-label="Season colors">
-          {(Object.keys(SEASONS) as Array<keyof typeof SEASONS>).map((id) => {
-            const s = SEASONS[id]
+        <p className="controls__hint">
+          Shown on the card as the date of birth.
+        </p>
+      </div>
+
+      <div className="controls__panel">
+        <h2 className="controls__title">Season</h2>
+        <p className="controls__hint">
+          Colors the season frame and indicator on the card.
+        </p>
+        <div
+          className="controls__season-options"
+          role="radiogroup"
+          aria-label="Season"
+        >
+          {SEASON_IDS.map((id) => {
+            const season = SEASONS[id]
+            const selected = seasonId === id
             return (
-              <div key={s.id} className="controls__season-legend-item">
+              <button
+                key={id}
+                type="button"
+                role="radio"
+                aria-checked={selected}
+                className={`controls__season-option${selected ? ' controls__season-option--selected' : ''}`}
+                onClick={() => onSeasonChange(id)}
+              >
                 <span
-                  className="controls__season-legend-swatch"
-                  style={{ backgroundColor: s.color }}
+                  className="controls__season-option-swatch"
+                  style={{ backgroundColor: season.color }}
                 >
-                  <SeasonSymbol season={s.id} />
+                  <SeasonSymbol season={season.id} />
                 </span>
-                <span>{s.label}</span>
-              </div>
+                <span className="controls__season-option-label">
+                  {season.label}
+                </span>
+              </button>
             )
           })}
         </div>
