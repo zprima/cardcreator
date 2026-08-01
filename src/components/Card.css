@@ -1,7 +1,7 @@
 /* True MTG / poker card size: 63mm × 88mm */
 .card {
   --season-accent: #c9a227;
-  --season-border-width: 3px;
+  --season-border-width: 2.2px;
   --card-w: 63mm;
   --card-h: 88mm;
   /* --card-bleed comes from page layout (fallback 0mm) */
@@ -9,21 +9,22 @@
   width: var(--card-w);
   height: var(--card-h);
   box-sizing: border-box;
-  border: calc(var(--card-border-base) + var(--card-bleed, 0mm)) solid #000;
+  border: calc(var(--card-border-base) + var(--card-bleed, 0mm)) solid #0a0a0a;
   border-radius: 2.5mm;
-  background: #000;
+  background: #0a0a0a;
   flex-shrink: 0;
-  display: flex;
+  display: block;
   overflow: hidden;
   position: relative;
   font-family: 'EB Garamond', 'Palatino Linotype', Palatino, 'Times New Roman',
     serif;
+  color: #fff;
 }
 
 .card--empty {
   background: #fff;
-  /* Empty cards keep a thin edge; no print bleed */
   border: 0.4mm solid #c8cdd6;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -39,146 +40,13 @@
   padding: 0 3mm;
 }
 
-/* Season frame overlays (L default + variants) */
-.card__seasonFrame {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.card__seasonFrame-corner {
-  position: absolute;
-  width: 8mm;
-  height: 8mm;
-  border-color: var(--season-accent);
-  border-style: solid;
-  border-width: 0;
-  box-sizing: border-box;
-}
-
-.card__seasonFrame-corner--tl {
-  top: 1.2mm;
-  left: 1.2mm;
-  border-width: var(--season-border-width) 0 0 var(--season-border-width);
-  border-top-left-radius: 1mm;
-}
-
-.card__seasonFrame-corner--tr {
-  top: 1.2mm;
-  right: 1.2mm;
-  border-width: var(--season-border-width) var(--season-border-width) 0 0;
-  border-top-right-radius: 1mm;
-}
-
-.card__seasonFrame-corner--bl {
-  bottom: 1.2mm;
-  left: 1.2mm;
-  border-width: 0 0 var(--season-border-width) var(--season-border-width);
-  border-bottom-left-radius: 1mm;
-}
-
-.card__seasonFrame-corner--br {
-  bottom: 1.2mm;
-  right: 1.2mm;
-  border-width: 0 var(--season-border-width) var(--season-border-width) 0;
-  border-bottom-right-radius: 1mm;
-}
-
-/* Full inset border */
-.card__seasonFrame-box {
-  position: absolute;
-  inset: 1.4mm;
-  box-sizing: border-box;
-  border: var(--season-border-width) solid var(--season-accent);
-  border-radius: 1.6mm;
-}
-
-/* Double L: larger outer + smaller inset corners */
-.card__seasonFrame--double .card__seasonFrame-corner {
-  width: 10mm;
-  height: 10mm;
-}
-
-.card__seasonFrame--double .card__seasonFrame-corner--inner {
-  width: 6mm;
-  height: 6mm;
-  border-width: 0;
-  opacity: 0.85;
-}
-
-.card__seasonFrame--double .card__seasonFrame-corner--inner.card__seasonFrame-corner--tl {
-  top: 2.6mm;
-  left: 2.6mm;
-  border-width: 0.5mm 0 0 0.5mm;
-}
-
-.card__seasonFrame--double .card__seasonFrame-corner--inner.card__seasonFrame-corner--tr {
-  top: 2.6mm;
-  right: 2.6mm;
-  border-width: 0.5mm 0.5mm 0 0;
-}
-
-.card__seasonFrame--double .card__seasonFrame-corner--inner.card__seasonFrame-corner--bl {
-  bottom: 2.6mm;
-  left: 2.6mm;
-  border-width: 0 0 0.5mm 0.5mm;
-}
-
-.card__seasonFrame--double .card__seasonFrame-corner--inner.card__seasonFrame-corner--br {
-  bottom: 2.6mm;
-  right: 2.6mm;
-  border-width: 0 0.5mm 0.5mm 0;
-}
-
-/* Corner pips (small filled squares) */
-.card__seasonFrame-pip {
-  position: absolute;
-  width: 2.2mm;
-  height: 2.2mm;
-  box-sizing: border-box;
-  background: var(--season-accent);
-  border: 0.25mm solid color-mix(in srgb, var(--season-accent) 70%, #000);
-}
-
-.card__seasonFrame-pip--tl {
-  top: 1.6mm;
-  left: 1.6mm;
-}
-
-.card__seasonFrame-pip--tr {
-  top: 1.6mm;
-  right: 1.6mm;
-}
-
-.card__seasonFrame-pip--bl {
-  bottom: 1.6mm;
-  left: 1.6mm;
-}
-
-.card__seasonFrame-pip--br {
-  bottom: 1.6mm;
-  right: 1.6mm;
-}
-
-.card__panel {
-  flex: 1;
-  min-height: 0;
-  min-width: 0;
-  box-sizing: border-box;
-  overflow: hidden;
-  position: relative;
-}
+/* ─── Art ─────────────────────────────────────────────── */
 
 .card__art {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  overflow: hidden;
   z-index: 0;
+  overflow: hidden;
 }
 
 .card__image {
@@ -189,201 +57,358 @@
   display: block;
 }
 
-.card__seasonIndicator {
+/* Soft top darkening so badges stay legible */
+.card__vignette {
   position: absolute;
-  top: 2.5mm;
-  left: 2.5mm;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.42) 0%,
+    rgba(0, 0, 0, 0.08) 18%,
+    transparent 32%
+  );
+}
+
+/* Season-colored left spine / ticket edge — solid color, above bottom panel */
+.card__spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1.35mm;
+  z-index: 5;
+  background: var(--season-accent);
+  pointer-events: none;
+}
+
+/* ─── Season frames (overlays) ────────────────────────── */
+
+.card__seasonFrame {
+  position: absolute;
+  inset: 0;
+  /* Above bottom text panel so corner frames stay visible */
+  z-index: 5;
+  pointer-events: none;
+}
+
+.card__seasonFrame-corner {
+  position: absolute;
   width: 7mm;
   height: 7mm;
-  border-radius: 50%;
+  border-color: var(--season-accent);
+  border-style: solid;
+  border-width: 0;
   box-sizing: border-box;
-  background: var(--season-accent);
-  color: #fff;
-  z-index: 4;
+  opacity: 0.92;
+}
+
+.card__seasonFrame-corner--tl {
+  top: 1.4mm;
+  left: 2.4mm; /* clear of spine */
+  border-width: var(--season-border-width) 0 0 var(--season-border-width);
+  border-top-left-radius: 0.6mm;
+}
+
+.card__seasonFrame-corner--tr {
+  top: 1.4mm;
+  right: 1.4mm;
+  border-width: var(--season-border-width) var(--season-border-width) 0 0;
+  border-top-right-radius: 0.6mm;
+}
+
+.card__seasonFrame-corner--bl {
+  bottom: 1.4mm;
+  left: 2.4mm;
+  border-width: 0 0 var(--season-border-width) var(--season-border-width);
+  border-bottom-left-radius: 0.6mm;
+}
+
+.card__seasonFrame-corner--br {
+  bottom: 1.4mm;
+  right: 1.4mm;
+  border-width: 0 var(--season-border-width) var(--season-border-width) 0;
+  border-bottom-right-radius: 0.6mm;
+}
+
+.card__seasonFrame-box {
+  position: absolute;
+  inset: 1.6mm 1.6mm 1.6mm 2.6mm;
+  box-sizing: border-box;
+  border: var(--season-border-width) solid var(--season-accent);
+  border-radius: 1.2mm;
+  opacity: 0.9;
+}
+
+/* ─── Season diamond badge ────────────────────────────── */
+
+.card__seasonBadge {
+  position: absolute;
+  top: 2.8mm;
+  left: 3.6mm;
+  width: 8.2mm;
+  height: 8.2mm;
+  z-index: 6;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 0.35mm solid rgba(255, 255, 255, 0.85);
-  box-shadow:
-    0 0 0 0.2mm rgba(0, 0, 0, 0.45),
-    0 0.4mm 1mm rgba(0, 0, 0, 0.55);
 }
 
-/* Flag emoji under season indicator; only rendered when country is set */
-.card__countryFlag {
+.card__seasonBadge-diamond {
   position: absolute;
-  top: calc(2.5mm + 7mm + 0.6mm);
-  left: calc(2.5mm - 5px);
-  z-index: 4;
+  inset: 0;
+  background: var(--season-accent);
+  transform: rotate(45deg);
+  border-radius: 0.7mm;
+  border: 0.3mm solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    0 0 0 0.25mm rgba(0, 0, 0, 0.55),
+    0 0.5mm 1.2mm rgba(0, 0, 0, 0.45);
+}
+
+.card__seasonBadge-icon {
+  position: relative;
+  z-index: 1;
+  width: 4.4mm;
+  height: 4.4mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  /* Counter-rotate so glyph stays upright inside diamond */
+  filter: drop-shadow(0 0.15mm 0.2mm rgba(0, 0, 0, 0.4));
+}
+
+.card__seasonBadge-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ─── Top chips (flag + sex) ──────────────────────────── */
+
+.card__topChips {
+  position: absolute;
+  top: 2.6mm;
+  right: 2.4mm;
+  z-index: 6;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1mm;
   pointer-events: none;
+}
+
+/* Breed — absolute on left edge, rotated 90°, season-colored bar */
+.card__breed {
+  position: absolute;
+  top: 50%;
+  left: 2mm; /* snug against season spine */
+  right: auto;
+  z-index: 6;
+  pointer-events: none;
+  max-width: 52mm; /* length along the vertical edge after rotation */
+  transform: translate(-50%, -50%) rotate(90deg);
+  transform-origin: center center;
+  box-sizing: border-box;
+  padding: 0.55mm 1.4mm;
+  border-radius: 0.4mm;
+  background: var(--season-accent);
+  font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 2mm;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #fff;
+  line-height: 1.2;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.card__chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.card__chip--sex {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 3.6mm;
+  font-weight: 600;
   line-height: 1;
+  color: #fff;
+  letter-spacing: 0;
+  text-shadow:
+    0 0.15mm 0.35mm rgba(0, 0, 0, 0.9),
+    0 0 0.7mm rgba(0, 0, 0, 0.5);
 }
 
 .card__flag {
   display: block;
-  font-size: 5mm;
+  font-size: 4.2mm;
   line-height: 1;
-  filter: drop-shadow(0 0.15mm 0.25mm rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 0.15mm 0.3mm rgba(0, 0, 0, 0.45));
 }
 
-.card__metaStrip {
-  position: absolute;
-  top: 2.2mm;
-  right: 2.2mm;
-  z-index: 4;
-  max-width: 55%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.3mm;
-  pointer-events: none;
-  text-align: right;
-}
+/* ─── Bottom info ─────────────────────────────────────── */
 
-.card__breed,
-.card__sex {
-  color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  text-shadow:
-    0 0.2mm 0.4mm rgba(0, 0, 0, 0.85),
-    0 0 0.8mm rgba(0, 0, 0, 0.5);
-}
-
-.card__breed {
-  font-family: Cinzel, 'Palatino Linotype', Palatino, serif;
-  font-size: 2.4mm;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
-
-.card__sex {
-  font-size: 2.1mm;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: capitalize;
-  opacity: 0.95;
-}
-
-.card__cardSet {
-  position: absolute;
-  right: 2.2mm;
-  bottom: 2mm;
-  z-index: 4;
-  max-width: 45%;
-  font-size: 2.1mm;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: #fff;
-  text-align: right;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  pointer-events: none;
-  text-shadow:
-    0 0.2mm 0.4mm rgba(0, 0, 0, 0.85),
-    0 0 0.8mm rgba(0, 0, 0, 0.5);
-}
-
-.card__dateofbirth {
-  position: absolute;
-  left: 2.2mm;
-  bottom: 2mm;
-  z-index: 4;
-  max-width: 45%;
-  font-size: 2.1mm;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: #fff;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  pointer-events: none;
-  text-shadow:
-    0 0.2mm 0.4mm rgba(0, 0, 0, 0.85),
-    0 0 0.8mm rgba(0, 0, 0, 0.5);
-}
-
-.card__description {
+.card__plate {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc(10mm + 20px);
-  height: 12mm;
-  width: 100%;
+  bottom: 0;
+  /* Below season frame (z-index 5) so corners stay visible */
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Transparent panel — darker toward bottom; starts after the left spine */
+.card__plate-panel {
+  position: absolute;
+  left: 1.35mm; /* clear of solid season spine */
+  right: 0;
+  bottom: 0;
+  height: 28mm;
   background: linear-gradient(
-    to right,
-    var(--season-accent) 0%,
-    color-mix(in srgb, var(--season-accent) 55%, transparent) 45%,
+    to top,
+    rgba(0, 0, 0, 0.62) 0%,
+    rgba(0, 0, 0, 0.32) 45%,
+    rgba(0, 0, 0, 0.08) 78%,
     transparent 100%
   );
-  box-sizing: border-box;
+}
+
+.card__plate-body {
+  position: relative;
   z-index: 1;
+  padding: 0 3.2mm 2.4mm 4mm; /* extra left for spine */
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
   gap: 0;
-  padding: 0 2mm 0 3mm;
-  text-align: left;
 }
 
 .card__name {
   font-family: Cinzel, 'Palatino Linotype', Palatino, serif;
-  font-size: 4.2mm;
+  font-size: 5.4mm;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.05;
+  letter-spacing: 0.015em;
+  line-height: 1.08;
   color: #fff;
   width: 100%;
-  text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   text-shadow:
-    0 0.2mm 0.4mm rgba(0, 0, 0, 0.75),
-    0 0 1.2mm rgba(0, 0, 0, 0.35);
+    0 0.2mm 0.4mm rgba(0, 0, 0, 0.85),
+    0 0 0.9mm rgba(0, 0, 0, 0.45);
 }
 
 .card__subname {
   font-family: 'EB Garamond', 'Palatino Linotype', Palatino, serif;
-  font-size: 2.6mm;
+  font-size: 2.9mm;
   font-weight: 500;
   font-style: italic;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  line-height: 1.05;
-  margin-top: -0.3mm;
-  color: #fff;
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  margin-top: 0.4mm;
+  color: rgba(255, 255, 255, 0.92);
   width: 100%;
-  text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   text-shadow:
-    0 0.2mm 0.4mm rgba(0, 0, 0, 0.75),
-    0 0 1.2mm rgba(0, 0, 0, 0.35);
+    0 0.15mm 0.35mm rgba(0, 0, 0, 0.85),
+    0 0 0.7mm rgba(0, 0, 0, 0.45);
 }
 
-/* Print/PDF: drop shadows that rasterize as grey boxes around shapes/text */
+.card__footer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 2mm;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-top: 1.2mm;
+  font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 1.85mm;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #fff;
+  line-height: 1.2;
+  text-shadow:
+    0 0.15mm 0.35mm rgba(0, 0, 0, 0.85),
+    0 0 0.7mm rgba(0, 0, 0, 0.45);
+}
+
+.card__footer-item {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 48%;
+  min-width: 0;
+}
+
+.card__footer-item--date {
+  text-align: left;
+}
+
+.card__footer-item--set {
+  margin-left: auto;
+  text-align: right;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ─── Print / PDF ─────────────────────────────────────── */
+
 @media print {
   .card,
   .card * {
     box-shadow: none !important;
     text-shadow: none !important;
     filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
-  .card__seasonIndicator {
-    border: 0.35mm solid #fff !important;
+  .card__seasonBadge-diamond {
+    border: 0.3mm solid #fff !important;
   }
 
   .card__flag {
     filter: none !important;
+  }
+
+  .card__vignette {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.05) 18%,
+      transparent 30%
+    ) !important;
+  }
+
+  .card__plate-panel {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.62) 0%,
+      rgba(0, 0, 0, 0.32) 45%,
+      rgba(0, 0, 0, 0.08) 78%,
+      transparent 100%
+    ) !important;
   }
 }

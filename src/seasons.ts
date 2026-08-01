@@ -26,7 +26,7 @@ export const SEASONS: Record<SeasonId, Season> = {
   winter: {
     id: 'winter',
     label: 'Winter',
-    color: '#006ffe',
+    color: '#3d9bff',
   },
 }
 

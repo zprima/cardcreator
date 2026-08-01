@@ -29,38 +29,6 @@ function CardFrame({ frameId }: { frameId: FrameId }) {
     )
   }
 
-  if (frameId === 'double') {
-    return (
-      <div
-        className="card__seasonFrame card__seasonFrame--double"
-        aria-hidden="true"
-      >
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--tl" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--tr" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--bl" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--br" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--tl card__seasonFrame-corner--inner" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--tr card__seasonFrame-corner--inner" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--bl card__seasonFrame-corner--inner" />
-        <span className="card__seasonFrame-corner card__seasonFrame-corner--br card__seasonFrame-corner--inner" />
-      </div>
-    )
-  }
-
-  if (frameId === 'pips') {
-    return (
-      <div
-        className="card__seasonFrame card__seasonFrame--pips"
-        aria-hidden="true"
-      >
-        <span className="card__seasonFrame-pip card__seasonFrame-pip--tl" />
-        <span className="card__seasonFrame-pip card__seasonFrame-pip--tr" />
-        <span className="card__seasonFrame-pip card__seasonFrame-pip--bl" />
-        <span className="card__seasonFrame-pip card__seasonFrame-pip--br" />
-      </div>
-    )
-  }
-
   // Default: L corners
   return (
     <div className="card__seasonFrame card__seasonFrame--l" aria-hidden="true">
@@ -70,6 +38,13 @@ function CardFrame({ frameId }: { frameId: FrameId }) {
       <span className="card__seasonFrame-corner card__seasonFrame-corner--br" />
     </div>
   )
+}
+
+function formatSexGlyph(sex: string): string {
+  const s = sex.trim().toLowerCase()
+  if (s === 'male' || s === 'm') return '♂'
+  if (s === 'female' || s === 'f') return '♀'
+  return sex.trim().charAt(0).toUpperCase()
 }
 
 function Card({
@@ -87,10 +62,10 @@ function Card({
   const seasonColor = season?.color ?? '#c9a227'
   const cardSetLabel = cardSet?.trim() || ''
   const breedLabel = breed?.trim() || ''
-  const sexLabel = sex?.trim()
-    ? sex.trim().charAt(0).toUpperCase() + sex.trim().slice(1)
-    : ''
-  const showMetaStrip = Boolean(breedLabel || sexLabel)
+  const sexRaw = sex?.trim() || ''
+  const sexGlyph = sexRaw ? formatSexGlyph(sexRaw) : ''
+  const displayName = name?.trim() || '—'
+  const displaySubname = subname?.trim() || ''
   const hasContent = Boolean(imageUrl)
   const country = getCountry(countryCode)
   const flagEmoji = countryCode ? countryCodeToFlagEmoji(countryCode) : ''
@@ -103,60 +78,89 @@ function Card({
     )
   }
 
+  const showFooter = Boolean(birthDateLabel || cardSetLabel)
+
   return (
     <div
       className="card"
       aria-label="Magic card"
       style={{ '--season-accent': seasonColor } as React.CSSProperties}
     >
-      <div className="card__panel">
-        <div className="card__art">
-          <img className="card__image" src={imageUrl!} alt="Card art" />
-        </div>
-        <div className="card__description">
-          <div className="card__name">{name?.trim() || '—'}</div>
-          {subname?.trim() ? (
-            <div className="card__subname">{subname.trim()}</div>
-          ) : null}
-        </div>
+      {/* Full-bleed art */}
+      <div className="card__art">
+        <img className="card__image" src={imageUrl!} alt="Card art" />
       </div>
+
+      {/* Soft vignette so top badges + bottom panel always read */}
+      <div className="card__vignette" aria-hidden="true" />
+
+      {/* Season color edge — ticket / spine accent */}
+      <div className="card__spine" aria-hidden="true" />
 
       <CardFrame frameId={frameId} />
 
+      {/* Top-left: season diamond badge */}
       <div
-        className="card__seasonIndicator"
+        className="card__seasonBadge"
         title={season ? season.label : 'Season'}
         aria-label={season ? `Season: ${season.label}` : 'Season not set'}
       >
-        {season ? <SeasonSymbol season={season.id} /> : null}
+        <span className="card__seasonBadge-diamond" aria-hidden="true" />
+        <span className="card__seasonBadge-icon">
+          {season ? <SeasonSymbol season={season.id} /> : null}
+        </span>
       </div>
 
-      {flagEmoji ? (
-        <div
-          className="card__countryFlag"
-          title={country?.name}
-          aria-label={country ? `Country: ${country.name}` : 'Country flag'}
-        >
-          <span className="card__flag" aria-hidden="true">
-            {flagEmoji}
-          </span>
+      {/* Top-right: origin + sex */}
+      {(flagEmoji || sexGlyph) && (
+        <div className="card__topChips">
+          {flagEmoji ? (
+            <span
+              className="card__chip card__chip--flag"
+              title={country?.name}
+              aria-label={country ? `Country: ${country.name}` : 'Country flag'}
+            >
+              <span className="card__flag" aria-hidden="true">
+                {flagEmoji}
+              </span>
+            </span>
+          ) : null}
+          {sexGlyph ? (
+            <span
+              className="card__chip card__chip--sex"
+              title={sexRaw}
+              aria-label={`Sex: ${sexRaw}`}
+            >
+              {sexGlyph}
+            </span>
+          ) : null}
         </div>
-      ) : null}
+      )}
 
-      {showMetaStrip ? (
-        <div className="card__metaStrip">
-          {breedLabel ? <div className="card__breed">{breedLabel}</div> : null}
-          {sexLabel ? <div className="card__sex">{sexLabel}</div> : null}
+      {/* Left edge: breed (rotated) */}
+      {breedLabel ? <div className="card__breed">{breedLabel}</div> : null}
+
+      {/* Bottom info — full transparent panel (frame draws above it) */}
+      <div className="card__plate">
+        <div className="card__plate-panel" aria-hidden="true" />
+        <div className="card__plate-body">
+          <div className="card__name">{displayName}</div>
+          {displaySubname ? (
+            <div className="card__subname">{displaySubname}</div>
+          ) : null}
+
+          {showFooter ? (
+            <div className="card__footer">
+              <span className="card__footer-item card__footer-item--date">
+                {birthDateLabel ?? ''}
+              </span>
+              <span className="card__footer-item card__footer-item--set">
+                {cardSetLabel}
+              </span>
+            </div>
+          ) : null}
         </div>
-      ) : null}
-
-      {birthDateLabel ? (
-        <div className="card__dateofbirth">{birthDateLabel}</div>
-      ) : null}
-
-      {cardSetLabel ? (
-        <div className="card__cardSet">{cardSetLabel}</div>
-      ) : null}
+      </div>
     </div>
   )
 }
