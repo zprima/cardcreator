@@ -45,7 +45,9 @@ function Card({
         </div>
         <div className="card__description">
           <div className="card__name">{name?.trim() || '—'}</div>
-          <div className="card__subname">{subname?.trim() || '—'}</div>
+          {subname?.trim() ? (
+            <div className="card__subname">{subname.trim()}</div>
+          ) : null}
         </div>
       </div>
 

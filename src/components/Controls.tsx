@@ -97,7 +97,7 @@ function Controls({
                 className="controls__input"
                 value={subname}
                 onChange={(event) => onSubnameChange(event.target.value)}
-                placeholder="strah ovc"
+                placeholder="natural sheep intimidator"
                 autoComplete="off"
               />
             </label>
@@ -150,7 +150,7 @@ function Controls({
                 className="controls__input"
                 value={breed}
                 onChange={(event) => onBreedChange(event.target.value)}
-                placeholder="Mešanec"
+                placeholder="mixed"
                 autoComplete="off"
               />
             </label>
@@ -185,7 +185,7 @@ function Controls({
                 className="controls__input"
                 value={cardSet}
                 onChange={(event) => onCardSetChange(event.target.value)}
-                placeholder="Base Set"
+                placeholder="BLK001"
                 autoComplete="off"
               />
             </label>
