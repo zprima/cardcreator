@@ -1,0 +1,190 @@
+/* Standard MTG card: 63mm × 88mm, scaled 2× */
+.card {
+  width: 126mm;
+  height: 176mm;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  border-radius: 2%;
+  /* Fills corner wedges between outer + panel radius so page white never shows */
+  background: #000;
+  flex-shrink: 0;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Yellow corner-only frame overlay (V / L brackets at each corner) */
+.card__frame {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.card__frame-corner {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-color: yellow;
+  border-style: solid;
+  box-sizing: border-box;
+}
+
+.card__frame-corner--tl {
+  top: 6px;
+  left: 6px;
+  border-width: 6px 0 0 6px;
+  border-top-left-radius: 4px;
+}
+
+.card__frame-corner--tr {
+  top: 6px;
+  right: 6px;
+  border-width: 6px 6px 0 0;
+  border-top-right-radius: 4px;
+}
+
+.card__frame-corner--bl {
+  bottom: 6px;
+  left: 6px;
+  border-width: 0 0 6px 6px;
+  border-bottom-left-radius: 4px;
+}
+
+.card__frame-corner--br {
+  bottom: 6px;
+  right: 6px;
+  border-width: 0 6px 6px 0;
+  border-bottom-right-radius: 4px;
+}
+
+.card__panel {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+.card__art {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 10px solid red;
+  border-radius: 2%;
+  overflow: hidden;
+}
+
+.card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card__mana {
+  position: absolute;
+  top: 13px;
+  left: 13px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: orange;
+  z-index: 4; /* above yellow frame overlay */
+}
+
+.card__picTaken {
+  position: absolute;
+  right: 17px;
+  bottom: 15px;
+  left: auto;
+  transform: none;
+  z-index: 4;
+  font-size: 10px;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+  background: red;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+.card__type {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 238px; /* above dateofbirth + description */
+  height: 32px;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 12px 0 48px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.card__dateofbirth {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 210px; /* between type strip and description */
+  height: 28px;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 12px 0 48px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.card__description {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 110px;
+  height: 100px;
+  width: 100%;
+  background: blue;
+  box-sizing: border-box;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 12px 0 48px;
+}
+
+.card__name {
+  font-size: 32px;
+  font-weight: 600;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.card__subname {
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
