@@ -1,84 +1,147 @@
-import { useEffect, useMemo, useState } from 'react'
-import Card from './components/Card'
-import Controls from './components/Controls'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  formatCardDate,
-  parseDateInput,
-  SEASONS,
-  type SeasonId,
-} from './seasons'
+  createCardGrid,
+  resizeCardGrid,
+  type CardData,
+} from './cardData'
+import Controls from './components/Controls'
+import LayoutPanel from './components/LayoutPanel'
+import PagePreview from './components/PagePreview'
+import type { SeasonId } from './seasons'
 import './App.css'
 
-function App() {
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
-  const [birthDate, setBirthDate] = useState('')
-  const [seasonId, setSeasonId] = useState<SeasonId | null>(null)
-  const [sex, setSex] = useState('')
-  const [breed, setBreed] = useState('')
-  const [name, setName] = useState('')
-  const [subname, setSubname] = useState('')
-  const [cardSet, setCardSet] = useState('')
+const PAGE_SIZE = 'A4'
+const DEFAULT_COLUMNS = 3
+const DEFAULT_ROWS = 3
 
+function App() {
+  const [columns, setColumns] = useState(DEFAULT_COLUMNS)
+  const [rows, setRows] = useState(DEFAULT_ROWS)
+  const [cards, setCards] = useState<CardData[]>(() =>
+    createCardGrid(DEFAULT_COLUMNS * DEFAULT_ROWS),
+  )
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  // Keep selection valid when cards array changes
   useEffect(() => {
-    if (!imageFile) {
-      setImageUrl(null)
+    if (cards.length === 0) {
+      setSelectedId(null)
       return
     }
-
-    const url = URL.createObjectURL(imageFile)
-    setImageUrl(url)
-
-    return () => {
-      URL.revokeObjectURL(url)
+    if (!selectedId || !cards.some((c) => c.id === selectedId)) {
+      setSelectedId(cards[0].id)
     }
-  }, [imageFile])
+  }, [cards, selectedId])
 
-  const parsedBirthDate = useMemo(
-    () => parseDateInput(birthDate),
-    [birthDate],
+  const selectedCard = useMemo(
+    () => cards.find((c) => c.id === selectedId) ?? null,
+    [cards, selectedId],
   )
 
-  const birthDateLabel = useMemo(
-    () => (parsedBirthDate ? formatCardDate(parsedBirthDate) : null),
-    [parsedBirthDate],
+  const updateSelected = useCallback(
+    (patch: Partial<CardData> | ((card: CardData) => CardData)) => {
+      if (!selectedId) return
+      setCards((prev) =>
+        prev.map((card) => {
+          if (card.id !== selectedId) return card
+          return typeof patch === 'function' ? patch(card) : { ...card, ...patch }
+        }),
+      )
+    },
+    [selectedId],
   )
 
-  const season = seasonId ? SEASONS[seasonId] : null
+  const handleColumnsChange = (next: number) => {
+    const cols = Math.min(6, Math.max(1, Math.floor(next)))
+    setColumns(cols)
+    setCards((prev) => resizeCardGrid(prev, cols * rows))
+  }
+
+  const handleRowsChange = (next: number) => {
+    const r = Math.min(6, Math.max(1, Math.floor(next)))
+    setRows(r)
+    setCards((prev) => resizeCardGrid(prev, columns * r))
+  }
+
+  const handleImageChange = (file: File | null) => {
+    updateSelected((card) => {
+      if (card.imageUrl) URL.revokeObjectURL(card.imageUrl)
+      if (!file) {
+        return { ...card, imageUrl: null, imageName: null }
+      }
+      return {
+        ...card,
+        imageUrl: URL.createObjectURL(file),
+        imageName: file.name,
+      }
+    })
+  }
+
+  const handlePrint = () => {
+    window.print()
+  }
 
   return (
     <main className="app">
-      <section className="app__preview" aria-label="Card preview">
-        <Card
-          imageUrl={imageUrl}
-          birthDateLabel={birthDateLabel}
-          season={season}
-          name={name}
-          subname={subname}
-          cardSet={cardSet}
-          breed={breed}
-          sex={sex}
+      <aside className="app__layout" aria-label="Layout settings">
+        <LayoutPanel
+          pageSize={PAGE_SIZE}
+          columns={columns}
+          rows={rows}
+          onColumnsChange={handleColumnsChange}
+          onRowsChange={handleRowsChange}
+          onPrint={handlePrint}
+        />
+      </aside>
+
+      <section className="app__preview" aria-label="Page preview">
+        <PagePreview
+          cards={cards}
+          columns={columns}
+          rows={rows}
+          selectedId={selectedId}
+          onSelect={setSelectedId}
+        />
+        {/* Print-only sheets: cards with pictures only */}
+        <PagePreview
+          cards={cards}
+          columns={columns}
+          rows={rows}
+          selectedId={null}
+          onSelect={() => {}}
+          printMode
         />
       </section>
-      <section className="app__controls" aria-label="Controls">
-        <Controls
-          fileName={imageFile?.name ?? null}
-          onImageChange={setImageFile}
-          birthDate={birthDate}
-          onBirthDateChange={setBirthDate}
-          seasonId={seasonId}
-          onSeasonChange={setSeasonId}
-          sex={sex}
-          onSexChange={setSex}
-          breed={breed}
-          onBreedChange={setBreed}
-          name={name}
-          onNameChange={setName}
-          subname={subname}
-          onSubnameChange={setSubname}
-          cardSet={cardSet}
-          onCardSetChange={setCardSet}
-        />
+
+      <section className="app__controls" aria-label="Card controls">
+        {selectedCard ? (
+          <Controls
+            selectedIndex={
+              cards.findIndex((c) => c.id === selectedCard.id) + 1
+            }
+            totalCards={cards.length}
+            fileName={selectedCard.imageName}
+            onImageChange={handleImageChange}
+            birthDate={selectedCard.birthDate}
+            onBirthDateChange={(birthDate) => updateSelected({ birthDate })}
+            seasonId={selectedCard.seasonId}
+            onSeasonChange={(seasonId: SeasonId) =>
+              updateSelected({ seasonId })
+            }
+            sex={selectedCard.sex}
+            onSexChange={(sex) => updateSelected({ sex })}
+            breed={selectedCard.breed}
+            onBreedChange={(breed) => updateSelected({ breed })}
+            name={selectedCard.name}
+            onNameChange={(name) => updateSelected({ name })}
+            subname={selectedCard.subname}
+            onSubnameChange={(subname) => updateSelected({ subname })}
+            cardSet={selectedCard.cardSet}
+            onCardSetChange={(cardSet) => updateSelected({ cardSet })}
+          />
+        ) : (
+          <div className="app__controls-empty">Select a card to edit</div>
+        )}
       </section>
     </main>
   )

@@ -5,6 +5,8 @@ import './Controls.css'
 const SEASON_IDS = Object.keys(SEASONS) as SeasonId[]
 
 type ControlsProps = {
+  selectedIndex?: number
+  totalCards?: number
   onImageChange: (file: File | null) => void
   fileName?: string | null
   birthDate: string
@@ -24,6 +26,8 @@ type ControlsProps = {
 }
 
 function Controls({
+  selectedIndex,
+  totalCards,
   onImageChange,
   fileName,
   birthDate,
@@ -45,6 +49,11 @@ function Controls({
     <section className="controls" aria-label="Card controls">
       <header className="controls__header">
         <h1 className="controls__heading">Card controls</h1>
+        {selectedIndex != null && totalCards != null ? (
+          <p className="controls__selection">
+            Editing card {selectedIndex} of {totalCards}
+          </p>
+        ) : null}
       </header>
 
       <div className="controls__body">

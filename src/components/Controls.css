@@ -31,11 +31,17 @@
 }
 
 .controls__heading {
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   font-size: 0.9rem;
   font-weight: 650;
   letter-spacing: 0.01em;
   color: var(--ctrl-text);
+}
+
+.controls__selection {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  color: var(--ctrl-muted);
 }
 
 .controls__body {

@@ -2,23 +2,26 @@
   height: 100svh;
   max-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-columns: 220px minmax(0, 1fr) 280px;
   margin: 0;
   box-sizing: border-box;
   overflow: hidden;
 }
 
-.app__preview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.app__layout {
   min-width: 0;
   height: 100%;
-  padding: 16px;
   box-sizing: border-box;
-  border-right: 1px solid #2a2f3a;
   overflow: hidden;
-  background: #fafbfc;
+  border-right: 1px solid #2a2f3a;
+}
+
+.app__preview {
+  min-width: 0;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #e8ecf2;
 }
 
 .app__controls {
@@ -27,4 +30,46 @@
   height: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  border-left: 1px solid #2a2f3a;
+}
+
+.app__controls-empty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.9rem;
+  color: #9aa3b2;
+  background: #1a1d24;
+}
+
+@media print {
+  html,
+  body,
+  #root {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  .app {
+    display: block;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .app__layout,
+  .app__controls {
+    display: none !important;
+  }
+
+  .app__preview {
+    overflow: visible;
+    background: #fff;
+    height: auto;
+  }
 }
