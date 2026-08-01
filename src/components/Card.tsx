@@ -1,3 +1,4 @@
+import { countryCodeToFlagEmoji, getCountry } from '../countries'
 import type { Season } from '../seasons'
 import SeasonSymbol from './SeasonSymbol'
 import './Card.css'
@@ -6,6 +7,7 @@ type CardProps = {
   imageUrl?: string | null
   birthDateLabel?: string | null
   season?: Season | null
+  countryCode?: string | null
   name?: string
   subname?: string
   cardSet?: string
@@ -17,6 +19,7 @@ function Card({
   imageUrl,
   birthDateLabel,
   season,
+  countryCode,
   name,
   subname,
   cardSet,
@@ -31,6 +34,8 @@ function Card({
     : ''
   const showMetaStrip = Boolean(breedLabel || sexLabel)
   const hasContent = Boolean(imageUrl)
+  const country = getCountry(countryCode)
+  const flagEmoji = countryCode ? countryCodeToFlagEmoji(countryCode) : ''
 
   if (!hasContent) {
     return (
@@ -72,6 +77,18 @@ function Card({
       >
         {season ? <SeasonSymbol season={season.id} /> : null}
       </div>
+
+      {flagEmoji ? (
+        <div
+          className="card__countryFlag"
+          title={country?.name}
+          aria-label={country ? `Country: ${country.name}` : 'Country flag'}
+        >
+          <span className="card__flag" aria-hidden="true">
+            {flagEmoji}
+          </span>
+        </div>
+      ) : null}
 
       {showMetaStrip ? (
         <div className="card__metaStrip">

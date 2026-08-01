@@ -130,6 +130,23 @@
     0 0.4mm 1mm rgba(0, 0, 0, 0.55);
 }
 
+/* Flag emoji under season indicator; only rendered when country is set */
+.card__countryFlag {
+  position: absolute;
+  top: calc(2.5mm + 7mm + 0.6mm);
+  left: calc(2.5mm - 5px);
+  z-index: 4;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.card__flag {
+  display: block;
+  font-size: 5mm;
+  line-height: 1;
+  filter: drop-shadow(0 0.15mm 0.25mm rgba(0, 0, 0, 0.35));
+}
+
 .card__metaStrip {
   position: absolute;
   top: 2.2mm;
@@ -285,5 +302,9 @@
 
   .card__seasonIndicator {
     border: 0.35mm solid #fff !important;
+  }
+
+  .card__flag {
+    filter: none !important;
   }
 }

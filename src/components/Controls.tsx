@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { COUNTRIES } from '../countries'
 import { SEASONS, type SeasonId } from '../seasons'
 import SeasonSymbol from './SeasonSymbol'
 import './Controls.css'
@@ -14,6 +15,8 @@ type ControlsProps = {
   onBirthDateChange: (value: string) => void
   seasonId: SeasonId | null
   onSeasonChange: (seasonId: SeasonId) => void
+  countryCode: string
+  onCountryChange: (countryCode: string) => void
   sex: string
   onSexChange: (sex: string) => void
   breed: string
@@ -38,6 +41,8 @@ function Controls({
   onBirthDateChange,
   seasonId,
   onSeasonChange,
+  countryCode,
+  onCountryChange,
   sex,
   onSexChange,
   breed,
@@ -212,6 +217,22 @@ function Controls({
           <p className="controls__section-title">Optional</p>
 
           <div className="controls__grid">
+            <label className="controls__field">
+              <span className="controls__label">Country</span>
+              <select
+                className="controls__input"
+                value={countryCode}
+                onChange={(event) => onCountryChange(event.target.value)}
+              >
+                <option value="">Select country…</option>
+                {COUNTRIES.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <label className="controls__field">
               <span className="controls__label">Breed</span>
               <input

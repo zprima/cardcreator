@@ -155,6 +155,10 @@ function App() {
             onSeasonChange={(seasonId: SeasonId) =>
               updateSelected({ seasonId })
             }
+            countryCode={selectedCard.countryCode ?? ''}
+            onCountryChange={(code) =>
+              updateSelected({ countryCode: code || null })
+            }
             sex={selectedCard.sex}
             onSexChange={(sex) => updateSelected({ sex })}
             breed={selectedCard.breed}

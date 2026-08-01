@@ -9,6 +9,7 @@ export type CardData = {
   birthDate: string
   cardSet: string
   seasonId: SeasonId | null
+  countryCode: string | null
   imageUrl: string | null
   imageName: string | null
 }
@@ -26,6 +27,7 @@ export function createEmptyCard(): CardData {
     birthDate: '',
     cardSet: '',
     seasonId: null,
+    countryCode: null,
     imageUrl: null,
     imageName: null,
   }
@@ -67,6 +69,7 @@ export function clearCard(card: CardData): CardData {
     birthDate: '',
     cardSet: '',
     seasonId: null,
+    countryCode: null,
     imageUrl: null,
     imageName: null,
   }
@@ -89,6 +92,7 @@ export function duplicateCardData(
     birthDate: source.birthDate,
     cardSet: source.cardSet,
     seasonId: source.seasonId,
+    countryCode: source.countryCode,
     // imageUrl + imageName intentionally left on target
   }
 }
