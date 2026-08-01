@@ -106,6 +106,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  /* Allow card borders / selection rings to paint fully */
+  overflow: visible;
 }
 
 .page-sheet__grid {
@@ -116,6 +118,7 @@
   /* Center the grid on the A4 sheet */
   justify-content: center;
   align-content: center;
+  overflow: visible;
 }
 
 .page-sheet__slot {
@@ -123,37 +126,40 @@
   height: var(--card-h);
   margin: 0;
   padding: 0;
-  border: 0.3mm solid transparent;
-  border-radius: 0.6mm;
+  /* No border on the slot — it would shrink the content box and clip the card edge */
+  border: none;
   background: transparent;
   cursor: pointer;
-  overflow: hidden;
+  overflow: visible;
   display: block;
   box-sizing: border-box;
   font: inherit;
   color: inherit;
   position: relative;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .page-sheet__slot:hover {
   outline: 0.4mm solid #9db7e8;
-  outline-offset: 0.3mm;
+  outline-offset: 0.5mm;
 }
 
 .page-sheet__slot--selected {
   outline: 0.5mm solid #1f6feb;
-  outline-offset: 0.3mm;
+  outline-offset: 0.5mm;
 }
 
 .page-sheet__slot--empty {
   background: transparent;
 }
 
-/* No transform scaling of the card itself — card is already 63×88mm */
+/* Card fills the slot exactly at true MTG size */
 .page-sheet__card-host {
   width: var(--card-w);
   height: var(--card-h);
   pointer-events: none;
+  overflow: visible;
 }
 
 .page-preview--print {
