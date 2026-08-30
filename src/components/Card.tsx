@@ -1,3 +1,4 @@
+import { ART_ADJUST_DEFAULT, artFilterCss } from '../artAdjust'
 import { countryCodeToFlagEmoji, getCountry } from '../countries'
 import { DEFAULT_FRAME_ID, type FrameId } from '../frames'
 import type { Season } from '../seasons'
@@ -15,6 +16,9 @@ type CardProps = {
   cardSet?: string
   breed?: string
   sex?: string
+  brightness?: number
+  saturation?: number
+  contrast?: number
 }
 
 function CardFrame({ frameId }: { frameId: FrameId }) {
@@ -58,6 +62,9 @@ function Card({
   cardSet,
   breed,
   sex,
+  brightness = ART_ADJUST_DEFAULT,
+  saturation = ART_ADJUST_DEFAULT,
+  contrast = ART_ADJUST_DEFAULT,
 }: CardProps) {
   const seasonColor = season?.color ?? '#c9a227'
   const cardSetLabel = cardSet?.trim() || ''
@@ -78,7 +85,11 @@ function Card({
     )
   }
 
-  const showFooter = Boolean(birthDateLabel || cardSetLabel)
+  // Always reserve footer height so name/subname sit at a fixed offset from
+  // the card bottom even when date/set are empty.
+  const dateText = birthDateLabel?.trim() || ''
+  const setText = cardSetLabel
+  const footerEmpty = !dateText && !setText
 
   return (
     <div
@@ -88,7 +99,14 @@ function Card({
     >
       {/* Full-bleed art */}
       <div className="card__art">
-        <img className="card__image" src={imageUrl!} alt="Card art" />
+        <img
+          className="card__image"
+          src={imageUrl!}
+          alt="Card art"
+          style={{
+            filter: artFilterCss({ brightness, saturation, contrast }),
+          }}
+        />
       </div>
 
       {/* Soft vignette so top badges + bottom panel always read */}
@@ -149,16 +167,17 @@ function Card({
             <div className="card__subname">{displaySubname}</div>
           ) : null}
 
-          {showFooter ? (
-            <div className="card__footer">
-              <span className="card__footer-item card__footer-item--date">
-                {birthDateLabel ?? ''}
-              </span>
-              <span className="card__footer-item card__footer-item--set">
-                {cardSetLabel}
-              </span>
-            </div>
-          ) : null}
+          <div
+            className="card__footer"
+            aria-hidden={footerEmpty ? true : undefined}
+          >
+            <span className="card__footer-item card__footer-item--date">
+              {dateText || '\u00A0'}
+            </span>
+            <span className="card__footer-item card__footer-item--set">
+              {setText || '\u00A0'}
+            </span>
+          </div>
         </div>
       </div>
     </div>

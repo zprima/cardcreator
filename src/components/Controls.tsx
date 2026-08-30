@@ -1,4 +1,9 @@
 import { useEffect, useState } from 'react'
+import {
+  ART_ADJUST_MAX,
+  ART_ADJUST_MIN,
+  clampArtAdjust,
+} from '../artAdjust'
 import { COUNTRIES } from '../countries'
 import { FRAMES, type FrameId } from '../frames'
 import { SEASONS, type SeasonId } from '../seasons'
@@ -6,6 +11,40 @@ import SeasonSymbol from './SeasonSymbol'
 import './Controls.css'
 
 const SEASON_IDS = Object.keys(SEASONS) as SeasonId[]
+
+function ArtAdjustSlider({
+  label,
+  value,
+  onChange,
+  disabled,
+}: {
+  label: string
+  value: number
+  onChange: (value: number) => void
+  disabled: boolean
+}) {
+  return (
+    <label className="controls__adjust">
+      <span className="controls__adjust-head">
+        <span className="controls__label">{label}</span>
+        <span className="controls__adjust-value">{value}%</span>
+      </span>
+      <input
+        type="range"
+        className="controls__range"
+        min={ART_ADJUST_MIN}
+        max={ART_ADJUST_MAX}
+        step={1}
+        value={value}
+        disabled={disabled}
+        aria-valuetext={`${value}%`}
+        onChange={(event) =>
+          onChange(clampArtAdjust(Number(event.target.value)))
+        }
+      />
+    </label>
+  )
+}
 
 type ControlsProps = {
   selectedIndex?: number
@@ -33,6 +72,12 @@ type ControlsProps = {
   onClear: () => void
   duplicateSources: { id: string; label: string }[]
   onDuplicateFrom: (sourceId: string) => void
+  brightness: number
+  onBrightnessChange: (value: number) => void
+  saturation: number
+  onSaturationChange: (value: number) => void
+  contrast: number
+  onContrastChange: (value: number) => void
 }
 
 function Controls({
@@ -61,6 +106,12 @@ function Controls({
   onClear,
   duplicateSources,
   onDuplicateFrom,
+  brightness,
+  onBrightnessChange,
+  saturation,
+  onSaturationChange,
+  contrast,
+  onContrastChange,
 }: ControlsProps) {
   const [duplicateSourceId, setDuplicateSourceId] = useState('')
 
@@ -153,6 +204,26 @@ function Controls({
               >
                 {fileName ?? 'No image'}
               </span>
+            </div>
+            <div className="controls__adjusts">
+              <ArtAdjustSlider
+                label="Brightness"
+                value={brightness}
+                onChange={onBrightnessChange}
+                disabled={!fileName}
+              />
+              <ArtAdjustSlider
+                label="Saturation"
+                value={saturation}
+                onChange={onSaturationChange}
+                disabled={!fileName}
+              />
+              <ArtAdjustSlider
+                label="Contrast"
+                value={contrast}
+                onChange={onContrastChange}
+                disabled={!fileName}
+              />
             </div>
           </div>
 

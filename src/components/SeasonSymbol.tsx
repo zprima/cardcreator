@@ -14,7 +14,7 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
     height: '60%',
     fill: 'none',
     stroke: 'currentColor',
-    strokeWidth: 1.75,
+    strokeWidth: 2.25,
     strokeLinecap: 'round' as const,
     strokeLinejoin: 'round' as const,
     'aria-hidden': true as const,
@@ -33,7 +33,7 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
             ry="3.6"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.5"
+            strokeWidth="2"
           />
           <ellipse
             cx="12"
@@ -42,7 +42,7 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
             ry="3.6"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.5"
+            strokeWidth="2"
             transform="rotate(72 12 12)"
           />
           <ellipse
@@ -52,7 +52,7 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
             ry="3.6"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.5"
+            strokeWidth="2"
             transform="rotate(144 12 12)"
           />
           <ellipse
@@ -62,7 +62,7 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
             ry="3.6"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.5"
+            strokeWidth="2"
             transform="rotate(216 12 12)"
           />
           <ellipse
@@ -72,7 +72,7 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
             ry="3.6"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.5"
+            strokeWidth="2"
             transform="rotate(288 12 12)"
           />
           {/* Center disk */}

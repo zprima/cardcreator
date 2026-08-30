@@ -1,3 +1,4 @@
+import { defaultArtAdjust } from './artAdjust'
 import { DEFAULT_FRAME_ID, type FrameId } from './frames'
 import type { SeasonId } from './seasons'
 
@@ -14,6 +15,9 @@ export type CardData = {
   frameId: FrameId
   imageUrl: string | null
   imageName: string | null
+  brightness: number
+  saturation: number
+  contrast: number
 }
 
 let cardIdCounter = 0
@@ -33,6 +37,7 @@ export function createEmptyCard(): CardData {
     frameId: DEFAULT_FRAME_ID,
     imageUrl: null,
     imageName: null,
+    ...defaultArtAdjust(),
   }
 }
 
@@ -76,12 +81,13 @@ export function clearCard(card: CardData): CardData {
     frameId: DEFAULT_FRAME_ID,
     imageUrl: null,
     imageName: null,
+    ...defaultArtAdjust(),
   }
 }
 
 /**
  * Copy text/metadata fields from source onto target.
- * Keeps target id and does not copy image (imageUrl / imageName).
+ * Keeps target id and does not copy image or art adjustments.
  */
 export function duplicateCardData(
   target: CardData,

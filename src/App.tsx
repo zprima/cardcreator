@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { clampArtAdjust } from './artAdjust'
 import {
   clearCard,
   createCardGrid,
@@ -187,6 +188,18 @@ function App() {
             onClear={handleClearCard}
             duplicateSources={duplicateSources}
             onDuplicateFrom={handleDuplicateFrom}
+            brightness={selectedCard.brightness}
+            onBrightnessChange={(brightness) =>
+              updateSelected({ brightness: clampArtAdjust(brightness) })
+            }
+            saturation={selectedCard.saturation}
+            onSaturationChange={(saturation) =>
+              updateSelected({ saturation: clampArtAdjust(saturation) })
+            }
+            contrast={selectedCard.contrast}
+            onContrastChange={(contrast) =>
+              updateSelected({ contrast: clampArtAdjust(contrast) })
+            }
           />
         ) : (
           <div className="app__controls-empty">Select a card to edit</div>

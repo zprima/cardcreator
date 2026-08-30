@@ -43,6 +43,9 @@ function cardToProps(card: CardData) {
     cardSet: card.cardSet,
     breed: card.breed,
     sex: card.sex,
+    brightness: card.brightness,
+    saturation: card.saturation,
+    contrast: card.contrast,
   }
 }
 
