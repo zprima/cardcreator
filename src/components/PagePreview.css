@@ -92,6 +92,8 @@
   --page-gap: 2mm;
   --card-w: 63mm;
   --card-h: 88mm;
+  --card-outer-w: calc(var(--card-w) + 2 * var(--card-bleed, 0mm));
+  --card-outer-h: calc(var(--card-h) + 2 * var(--card-bleed, 0mm));
   width: 210mm;
   height: 297mm;
   box-sizing: border-box;
@@ -112,8 +114,8 @@
 
 .page-sheet__grid {
   display: grid;
-  grid-template-columns: repeat(var(--page-cols), var(--card-w));
-  grid-template-rows: repeat(var(--page-rows), var(--card-h));
+  grid-template-columns: repeat(var(--page-cols), var(--card-outer-w));
+  grid-template-rows: repeat(var(--page-rows), var(--card-outer-h));
   gap: var(--page-gap);
   /* Center the grid on the A4 sheet */
   justify-content: center;
@@ -122,8 +124,8 @@
 }
 
 .page-sheet__slot {
-  width: var(--card-w);
-  height: var(--card-h);
+  width: var(--card-outer-w);
+  height: var(--card-outer-h);
   margin: 0;
   padding: 0;
   /* No border on the slot — it would shrink the content box and clip the card edge */
@@ -158,8 +160,8 @@
 
 /* Card fills the slot exactly at true MTG size */
 .page-sheet__card-host {
-  width: var(--card-w);
-  height: var(--card-h);
+  width: var(--card-outer-w);
+  height: var(--card-outer-h);
   pointer-events: none;
   overflow: visible;
 }

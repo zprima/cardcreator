@@ -92,7 +92,8 @@ function LayoutPanel({
           />
         </label>
         <p className="layout-panel__hint">
-          Expands the black card border (0–{MAX_BLEED_MM} mm).
+          Extra black border outside the card (0–{MAX_BLEED_MM} mm). Does not
+          shrink the art.
         </p>
 
         <p className="layout-panel__hint">

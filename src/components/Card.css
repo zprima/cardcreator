@@ -28,8 +28,9 @@
   --frame-edge:
     drop-shadow(0.2mm 0 0 #000) drop-shadow(-0.2mm 0 0 #000)
     drop-shadow(0 0.2mm 0 #000) drop-shadow(0 -0.2mm 0 #000);
-  width: var(--card-w);
-  height: var(--card-h);
+  /* Trim stays --card-w × --card-h; bleed grows the black border outward */
+  width: calc(var(--card-w) + 2 * var(--card-bleed, 0mm));
+  height: calc(var(--card-h) + 2 * var(--card-bleed, 0mm));
   box-sizing: border-box;
   border: calc(var(--card-border-base) + var(--card-bleed, 0mm)) solid #0a0a0a;
   border-radius: 2.5mm;

@@ -9,13 +9,13 @@ export const PAGE_HEIGHT_MM = 297
 /** Gap between cards on the page */
 export const PAGE_GAP_MM = 2
 
-/** Base black card border (before bleed) */
+/** Base black card border (inside the 63×88 mm trim) */
 export const CARD_BORDER_BASE_MM = 0.4
 
-/** Default extra bleed added to the black border */
+/** Default extra bleed added outside the trim */
 export const DEFAULT_BLEED_MM = 1
 
-/** Max bleed so cards still fit gaps on a 3×3 sheet */
+/** Max outward bleed that still fits a 3×3 grid on A4 with gaps */
 export const MAX_BLEED_MM = 2
 
 /**
