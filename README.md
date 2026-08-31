@@ -2,6 +2,8 @@
 
 A React + TypeScript + Vite app for laying out collector cards on an A4 page.
 
+Live site: https://zprima.github.io/cardcreator/
+
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) (current LTS recommended)
