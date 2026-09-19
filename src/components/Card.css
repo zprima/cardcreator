@@ -409,9 +409,7 @@
     text-shadow: none !important;
   }
 
-  /* The dark panel supplies contrast without thickening printed letters. */
-  .card__name,
-  .card__subname,
+  /* Keep small footer text clean; names retain their shared screen outlines. */
   .card__footer {
     text-shadow: none;
     -webkit-text-stroke: 0;
