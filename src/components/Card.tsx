@@ -1,14 +1,21 @@
 import { ART_ADJUST_DEFAULT, artFilterCss } from '../artAdjust'
 import { countryCodeToFlagEmoji, getCountry } from '../countries'
 import { DEFAULT_FRAME_ID, type FrameId } from '../frames'
+import type { IconId } from '../icons'
 import type { Season } from '../seasons'
-import SeasonSymbol from './SeasonSymbol'
+import CardIcon from './CardIcon'
 import './Card.css'
 
 type CardProps = {
   imageUrl?: string | null
   birthDateLabel?: string | null
   season?: Season | null
+  seasonColor?: string | null
+  seasonIcon?: IconId | null
+  seasonIconImage?: string | null
+  showSeasonDiamond?: boolean
+  seasonIconSize?: number
+  showBottomShadow?: boolean
   countryCode?: string | null
   frameId?: FrameId
   name?: string
@@ -22,6 +29,8 @@ type CardProps = {
 }
 
 function CardFrame({ frameId }: { frameId: FrameId }) {
+  if (frameId === 'none') return null
+
   if (frameId === 'full') {
     return (
       <div
@@ -55,6 +64,12 @@ function Card({
   imageUrl,
   birthDateLabel,
   season,
+  seasonColor: customSeasonColor,
+  seasonIcon,
+  seasonIconImage,
+  showSeasonDiamond = true,
+  seasonIconSize = 100,
+  showBottomShadow = true,
   countryCode,
   frameId = DEFAULT_FRAME_ID,
   name,
@@ -66,12 +81,13 @@ function Card({
   saturation = ART_ADJUST_DEFAULT,
   contrast = ART_ADJUST_DEFAULT,
 }: CardProps) {
-  const seasonColor = season?.color ?? '#c9a227'
+  const seasonColor = customSeasonColor ?? season?.color ?? '#c9a227'
+  const icon = seasonIcon
   const cardSetLabel = cardSet?.trim() || ''
   const breedLabel = breed?.trim() || ''
   const sexRaw = sex?.trim() || ''
   const sexGlyph = sexRaw ? formatSexGlyph(sexRaw) : ''
-  const displayName = name?.trim() || '—'
+  const displayName = name?.trim() || ''
   const displaySubname = subname?.trim() || ''
   const hasContent = Boolean(imageUrl)
   const country = getCountry(countryCode)
@@ -109,9 +125,6 @@ function Card({
         />
       </div>
 
-      {/* Soft vignette so top badges + bottom panel always read */}
-      <div className="card__vignette" aria-hidden="true" />
-
       {/* Season color edge — ticket / spine accent */}
       <div className="card__spine" aria-hidden="true" />
 
@@ -120,12 +133,19 @@ function Card({
       {/* Top-left: season diamond badge */}
       <div
         className="card__seasonBadge"
-        title={season ? season.label : 'Season'}
-        aria-label={season ? `Season: ${season.label}` : 'Season not set'}
+        title="Card icon"
+        aria-label="Card icon"
       >
-        <span className="card__seasonBadge-diamond" aria-hidden="true" />
-        <span className="card__seasonBadge-icon">
-          {season ? <SeasonSymbol season={season.id} /> : null}
+        {showSeasonDiamond ? (
+          <span className="card__seasonBadge-diamond" aria-hidden="true" />
+        ) : null}
+        <span
+          className="card__seasonBadge-icon"
+          style={{ transform: `scale(${seasonIconSize / 100})` }}
+        >
+          {seasonIconImage ? (
+            <img className="card__custom-icon" src={seasonIconImage} alt="Custom icon" />
+          ) : icon ? <CardIcon icon={icon} /> : null}
         </span>
       </div>
 
@@ -160,7 +180,7 @@ function Card({
 
       {/* Bottom info — full transparent panel (frame draws above it) */}
       <div className="card__plate">
-        <div className="card__plate-panel" aria-hidden="true" />
+        {showBottomShadow ? <div className="card__plate-panel" aria-hidden="true" /> : null}
         <div className="card__plate-body">
           <div className="card__name">{displayName}</div>
           {displaySubname ? (

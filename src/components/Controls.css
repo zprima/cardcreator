@@ -165,6 +165,7 @@
 }
 
 .controls__upload {
+  position: relative;
   display: inline-flex;
   flex-shrink: 0;
   cursor: pointer;
@@ -188,14 +189,20 @@
 
 .controls__file-input {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
+  margin: 0;
+  opacity: 0;
   border: 0;
+  cursor: pointer;
+}
+
+.controls__upload:has(.controls__file-input:focus-visible) {
+  outline: 2px solid var(--ctrl-focus);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 .controls__filename {
@@ -305,15 +312,17 @@
 
 .controls__season-options {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 6px;
 }
 
 .controls__season-option {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 8px;
   padding: 7px 8px;
   border: 1px solid var(--ctrl-border);
@@ -360,4 +369,61 @@
 
 .controls__season-option--selected .controls__season-option-label {
   color: var(--ctrl-accent);
+}
+
+.controls__season-customization {
+  margin-top: 4px;
+}
+
+.controls__color {
+  height: 36px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.controls__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.controls__toggle input {
+  margin: 0;
+  accent-color: var(--ctrl-accent);
+}
+
+.controls__icon-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.controls__icon-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border: 1px solid var(--ctrl-border);
+  border-radius: 6px;
+  background: var(--ctrl-surface);
+  color: var(--ctrl-text);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.controls__icon-option svg {
+  width: 24px;
+  height: 24px;
+}
+
+.controls__icon-option[aria-pressed='true'] {
+  border-color: var(--ctrl-accent);
+  background: var(--ctrl-accent-soft);
+}
+
+.controls__icon-option:hover {
+  background: var(--ctrl-surface-hover);
 }

@@ -157,6 +157,7 @@ function App() {
       <section className="app__controls" aria-label="Card controls">
         {selectedCard ? (
           <Controls
+            key={selectedCard.id}
             selectedIndex={
               cards.findIndex((c) => c.id === selectedCard.id) + 1
             }
@@ -167,7 +168,26 @@ function App() {
             onBirthDateChange={(birthDate) => updateSelected({ birthDate })}
             seasonId={selectedCard.seasonId}
             onSeasonChange={(seasonId: SeasonId) =>
-              updateSelected({ seasonId })
+              updateSelected({ seasonId, seasonColor: null })
+            }
+            seasonColor={selectedCard.seasonColor}
+            onSeasonColorChange={(seasonColor) => updateSelected({ seasonColor, seasonId: null })}
+            seasonIcon={selectedCard.seasonIcon}
+            onSeasonIconChange={(seasonIcon) =>
+              updateSelected({ seasonIcon, seasonIconImage: null, seasonIconName: null })
+            }
+            seasonIconName={selectedCard.seasonIconName}
+            onSeasonIconUpload={(seasonIconImage, seasonIconName) =>
+              updateSelected({ seasonIconImage, seasonIconName })
+            }
+            showSeasonDiamond={selectedCard.showSeasonDiamond}
+            onShowSeasonDiamondChange={(showSeasonDiamond) => updateSelected({ showSeasonDiamond })}
+            seasonIconSize={selectedCard.seasonIconSize}
+            onSeasonIconSizeChange={(seasonIconSize) => updateSelected({ seasonIconSize })}
+            showBottomShadow={selectedCard.showBottomShadow}
+            onShowBottomShadowChange={(showBottomShadow) => updateSelected({ showBottomShadow })}
+            onSeasonAppearanceReset={() =>
+              updateSelected({ seasonColor: null, seasonIcon: null, seasonIconImage: null, seasonIconName: null, showSeasonDiamond: true, seasonIconSize: 100 })
             }
             countryCode={selectedCard.countryCode ?? ''}
             onCountryChange={(code) =>

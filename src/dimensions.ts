@@ -13,7 +13,7 @@ export const PAGE_GAP_MM = 2
 export const CARD_BORDER_BASE_MM = 0.4
 
 /** Default extra bleed added outside the trim */
-export const DEFAULT_BLEED_MM = 1
+export const DEFAULT_BLEED_MM = 1.5
 
 /** Max outward bleed that still fits a 3×3 grid on A4 with gaps */
 export const MAX_BLEED_MM = 2

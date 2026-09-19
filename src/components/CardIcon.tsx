@@ -1,12 +1,12 @@
-import type { SeasonId } from '../seasons'
+import type { IconId } from '../icons'
 
-type SeasonSymbolProps = {
-  season: SeasonId
+type CardIconProps = {
+  icon: IconId
   className?: string
 }
 
-/** Simple seasonal glyphs for the seasonIndicator. */
-function SeasonSymbol({ season, className }: SeasonSymbolProps) {
+/** Built-in card icons. */
+function CardIcon({ icon, className }: CardIconProps) {
   const common = {
     className,
     viewBox: '0 0 24 24',
@@ -20,8 +20,38 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
     'aria-hidden': true as const,
   }
 
-  switch (season) {
-    case 'spring':
+  switch (icon) {
+    case 'wings':
+      return (
+        <svg {...common} strokeWidth={1.5}>
+          <path d="M12 18C8 19 2 16 2 5l6 5c3 1 4 4 4 8Z" />
+          <path d="M12 18c4 1 10-2 10-13l-6 5c-3 1-4 4-4 8Z" />
+          <path d="m3 10 5 4m-4-1 4 3m13-6-5 4m4-1-4 3" />
+        </svg>
+      )
+    case 'heart':
+      return (
+        <svg {...common}>
+          <path d="M12 21 3.5 12.5C-2 7 6 0 12 7c6-7 14 0 8.5 5.5Z" fill="currentColor" stroke="none" />
+        </svg>
+      )
+    case 'star':
+      return (
+        <svg {...common}>
+          <path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8-6.2-3.2L5.8 21 7 14.2 2 9.3l6.9-1Z" fill="currentColor" stroke="none" />
+        </svg>
+      )
+    case 'paw':
+      return (
+        <svg {...common} fill="currentColor" stroke="none">
+          <ellipse cx="4.5" cy="10" rx="2.2" ry="3" transform="rotate(-25 4.5 10)" />
+          <ellipse cx="9" cy="5.5" rx="2.2" ry="3" />
+          <ellipse cx="15" cy="5.5" rx="2.2" ry="3" />
+          <ellipse cx="19.5" cy="10" rx="2.2" ry="3" transform="rotate(25 19.5 10)" />
+          <path d="M12 11c-3 0-4 3-6 5-3 4 1 6 4 4l2-.5 2 .5c3 2 7 0 4-4-2-2-3-5-6-5Z" />
+        </svg>
+      )
+    case 'flower':
       // Flower — centered, open petals (outline style so it reads clearly)
       return (
         <svg {...common}>
@@ -79,7 +109,7 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
           <circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none" />
         </svg>
       )
-    case 'summer':
+    case 'sun':
       // Sun (unchanged)
       return (
         <svg {...common}>
@@ -87,7 +117,7 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
           <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" />
         </svg>
       )
-    case 'autumn':
+    case 'leaf':
       // Classical maple leaf (Material Design “leaf-maple” silhouette, 24×24)
       return (
         <svg {...common}>
@@ -98,7 +128,7 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
           />
         </svg>
       )
-    case 'winter':
+    case 'snowflake':
       // Snowflake (unchanged)
       return (
         <svg {...common}>
@@ -111,4 +141,4 @@ function SeasonSymbol({ season, className }: SeasonSymbolProps) {
   }
 }
 
-export default SeasonSymbol
+export default CardIcon

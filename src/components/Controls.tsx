@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   ART_ADJUST_MAX,
   ART_ADJUST_MIN,
@@ -7,10 +7,12 @@ import {
 import { COUNTRIES } from '../countries'
 import { FRAMES, type FrameId } from '../frames'
 import { SEASONS, type SeasonId } from '../seasons'
-import SeasonSymbol from './SeasonSymbol'
+import { ICONS, type IconId } from '../icons'
+import CardIcon from './CardIcon'
 import './Controls.css'
 
 const SEASON_IDS = Object.keys(SEASONS) as SeasonId[]
+const ICON_IDS = Object.keys(ICONS) as IconId[]
 
 function ArtAdjustSlider({
   label,
@@ -55,6 +57,19 @@ type ControlsProps = {
   onBirthDateChange: (value: string) => void
   seasonId: SeasonId | null
   onSeasonChange: (seasonId: SeasonId) => void
+  seasonColor: string | null
+  onSeasonColorChange: (color: string) => void
+  seasonIcon: IconId | null
+  onSeasonIconChange: (icon: IconId | null) => void
+  seasonIconName: string | null
+  onSeasonIconUpload: (dataUrl: string | null, name: string | null) => void
+  showSeasonDiamond: boolean
+  onShowSeasonDiamondChange: (visible: boolean) => void
+  seasonIconSize: number
+  onSeasonIconSizeChange: (size: number) => void
+  showBottomShadow: boolean
+  onShowBottomShadowChange: (visible: boolean) => void
+  onSeasonAppearanceReset: () => void
   countryCode: string
   onCountryChange: (countryCode: string) => void
   frameId: FrameId
@@ -89,6 +104,19 @@ function Controls({
   onBirthDateChange,
   seasonId,
   onSeasonChange,
+  seasonColor,
+  onSeasonColorChange,
+  seasonIcon,
+  onSeasonIconChange,
+  seasonIconName,
+  onSeasonIconUpload,
+  showSeasonDiamond,
+  onShowSeasonDiamondChange,
+  seasonIconSize,
+  onSeasonIconSizeChange,
+  showBottomShadow,
+  onShowBottomShadowChange,
+  onSeasonAppearanceReset,
   countryCode,
   onCountryChange,
   frameId,
@@ -114,6 +142,32 @@ function Controls({
   onContrastChange,
 }: ControlsProps) {
   const [duplicateSourceId, setDuplicateSourceId] = useState('')
+  const [iconError, setIconError] = useState('')
+  const iconReader = useRef<FileReader | null>(null)
+
+  useEffect(() => () => iconReader.current?.abort(), [])
+
+  const cancelIconUpload = () => {
+    iconReader.current?.abort()
+    setIconError('')
+  }
+
+  const uploadIcon = (file: File) => {
+    cancelIconUpload()
+    if (!file.type.startsWith('image/')) {
+      setIconError('Choose an image file for the icon.')
+      return
+    }
+    const reader = new FileReader()
+    iconReader.current = reader
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        onSeasonIconUpload(reader.result, file.name)
+      }
+    }
+    reader.onerror = () => setIconError('Could not read this image. Please try again.')
+    reader.readAsDataURL(file)
+  }
 
   useEffect(() => {
     // Drop selection if source list no longer includes it (e.g. switched cards)
@@ -254,11 +308,11 @@ function Controls({
           </div>
 
           <div className="controls__season">
-            <span className="controls__label">Season</span>
+            <span className="controls__label">Color presets</span>
             <div
               className="controls__season-options"
               role="radiogroup"
-              aria-label="Season"
+              aria-label="Color presets"
             >
               {SEASON_IDS.map((id) => {
                 const season = SEASONS[id]
@@ -269,6 +323,7 @@ function Controls({
                     type="button"
                     role="radio"
                     aria-checked={selected}
+                    aria-label={`${season.label} color`}
                     title={season.label}
                     className={`controls__season-option${selected ? ' controls__season-option--selected' : ''}`}
                     onClick={() => onSeasonChange(id)}
@@ -276,21 +331,132 @@ function Controls({
                     <span
                       className="controls__season-option-swatch"
                       style={{ backgroundColor: season.color }}
-                    >
-                      <SeasonSymbol season={season.id} />
-                    </span>
-                    <span className="controls__season-option-label">
-                      {season.label}
-                    </span>
+                      aria-hidden="true"
+                    />
                   </button>
                 )
               })}
+            </div>
+            <div className="controls__grid controls__season-customization">
+              <label className="controls__field">
+                <span className="controls__label">Custom color</span>
+                <input
+                  type="color"
+                  className="controls__input controls__color"
+                  value={seasonColor ?? (seasonId ? SEASONS[seasonId].color : '#c9a227')}
+                  onChange={(event) => onSeasonColorChange(event.target.value)}
+                />
+              </label>
+              <div className="controls__field">
+                <span className="controls__label">Icon</span>
+                <div className="controls__icon-options" role="group" aria-label="Icon">
+                  {ICON_IDS.map((id) => (
+                    <button
+                      key={id}
+                      type="button"
+                      className={`controls__icon-option${!seasonIconName && seasonIcon === id ? ' controls__season-option--selected' : ''}`}
+                      aria-pressed={!seasonIconName && seasonIcon === id}
+                      onClick={() => {
+                        cancelIconUpload()
+                        onSeasonIconChange(id)
+                      }}
+                    >
+                      <CardIcon icon={id} />
+                      <span>{ICONS[id]}</span>
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    className="controls__duplicate-btn"
+                    aria-pressed={!seasonIconName && seasonIcon === null}
+                    onClick={() => {
+                      cancelIconUpload()
+                      onSeasonIconChange(null)
+                    }}
+                  >
+                    No icon
+                  </button>
+                </div>
+              </div>
+              <div className="controls__picture">
+                <label className="controls__upload">
+                  <span className="controls__upload-label">
+                    {seasonIconName ? 'Change icon' : 'Upload icon'}
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    aria-label="Upload icon"
+                    className="controls__file-input"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0]
+                      if (file) uploadIcon(file)
+                      event.target.value = ''
+                    }}
+                  />
+                </label>
+                <span className="controls__filename" title={seasonIconName ?? undefined}>
+                  {seasonIconName ?? 'No custom icon'}
+                </span>
+              </div>
+              {seasonIconName ? (
+                <button type="button" className="controls__duplicate-btn" onClick={() => {
+                  cancelIconUpload()
+                  onSeasonIconUpload(null, null)
+                }}>
+                  Remove uploaded icon
+                </button>
+              ) : null}
+              <label className="controls__toggle">
+                <input
+                  type="checkbox"
+                  checked={showSeasonDiamond}
+                  onChange={(event) => onShowSeasonDiamondChange(event.target.checked)}
+                />
+                <span className="controls__label">Show diamond</span>
+              </label>
+              <label className="controls__adjust">
+                <span className="controls__adjust-head">
+                  <span className="controls__label">Icon size</span>
+                  <span className="controls__adjust-value">{seasonIconSize}%</span>
+                </span>
+                <input
+                  type="range"
+                  className="controls__range"
+                  min={25}
+                  max={200}
+                  step={5}
+                  value={seasonIconSize}
+                  aria-valuetext={`${seasonIconSize}%`}
+                  onChange={(event) => onSeasonIconSizeChange(Number(event.target.value))}
+                />
+              </label>
+              {iconError ? <p className="controls__duplicate-hint" role="alert">{iconError}</p> : null}
+              <button
+                type="button"
+                className="controls__duplicate-btn"
+                disabled={seasonColor === null && seasonIcon === null && !seasonIconName && showSeasonDiamond && seasonIconSize === 100}
+                onClick={() => {
+                  cancelIconUpload()
+                  onSeasonAppearanceReset()
+                }}
+              >
+                Reset color and icon
+              </button>
             </div>
           </div>
         </div>
 
         <div className="controls__section controls__section--optional">
           <p className="controls__section-title">Optional</p>
+          <label className="controls__toggle">
+            <input
+              type="checkbox"
+              checked={showBottomShadow}
+              onChange={(event) => onShowBottomShadowChange(event.target.checked)}
+            />
+            <span className="controls__label">Bottom shadow</span>
+          </label>
 
           <div className="controls__grid">
             <label className="controls__field">

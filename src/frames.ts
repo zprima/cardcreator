@@ -1,4 +1,4 @@
-export type FrameId = 'l' | 'full'
+export type FrameId = 'l' | 'full' | 'none'
 
 export type FrameOption = {
   id: FrameId
@@ -7,6 +7,11 @@ export type FrameOption = {
 }
 
 export const FRAMES: FrameOption[] = [
+  {
+    id: 'none',
+    label: 'None',
+    description: 'No inset frame',
+  },
   {
     id: 'l',
     label: 'L corners',

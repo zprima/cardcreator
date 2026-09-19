@@ -1,5 +1,6 @@
 import { defaultArtAdjust } from './artAdjust'
 import { DEFAULT_FRAME_ID, type FrameId } from './frames'
+import type { IconId } from './icons'
 import type { SeasonId } from './seasons'
 
 export type CardData = {
@@ -11,6 +12,13 @@ export type CardData = {
   birthDate: string
   cardSet: string
   seasonId: SeasonId | null
+  seasonColor: string | null
+  seasonIcon: IconId | null
+  seasonIconImage: string | null
+  seasonIconName: string | null
+  showSeasonDiamond: boolean
+  seasonIconSize: number
+  showBottomShadow: boolean
   countryCode: string | null
   frameId: FrameId
   imageUrl: string | null
@@ -33,6 +41,13 @@ export function createEmptyCard(): CardData {
     birthDate: '',
     cardSet: '',
     seasonId: null,
+    seasonColor: null,
+    seasonIcon: null,
+    seasonIconImage: null,
+    seasonIconName: null,
+    showSeasonDiamond: true,
+    seasonIconSize: 100,
+    showBottomShadow: true,
     countryCode: null,
     frameId: DEFAULT_FRAME_ID,
     imageUrl: null,
@@ -77,6 +92,13 @@ export function clearCard(card: CardData): CardData {
     birthDate: '',
     cardSet: '',
     seasonId: null,
+    seasonColor: null,
+    seasonIcon: null,
+    seasonIconImage: null,
+    seasonIconName: null,
+    showSeasonDiamond: true,
+    seasonIconSize: 100,
+    showBottomShadow: true,
     countryCode: null,
     frameId: DEFAULT_FRAME_ID,
     imageUrl: null,
@@ -102,6 +124,13 @@ export function duplicateCardData(
     birthDate: source.birthDate,
     cardSet: source.cardSet,
     seasonId: source.seasonId,
+    seasonColor: source.seasonColor,
+    seasonIcon: source.seasonIcon,
+    seasonIconImage: source.seasonIconImage,
+    seasonIconName: source.seasonIconName,
+    showSeasonDiamond: source.showSeasonDiamond,
+    seasonIconSize: source.seasonIconSize,
+    showBottomShadow: source.showBottomShadow,
     countryCode: source.countryCode,
     frameId: source.frameId,
     // imageUrl + imageName intentionally left on target
